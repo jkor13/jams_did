@@ -9,6 +9,7 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 - `src/platform_moderation/`: shared data prep, model, and reporting code
 - `scripts/run_concept_moderation.py`: main moderation models
 - `scripts/run_competition_mechanism_dml.py`: competition-mechanism and DML checks
+- `scripts/run_isolated_competition_pricing.py`: isolated competition-pricing mechanism tests
 - `scripts/run_idea_*.py`: seven separate JAMS story-extension tests
 - `scripts/run_all_idea_tests.py`: runs all seven idea tests
 - `results/`: curated CSV outputs used for interpretation
@@ -26,6 +27,7 @@ From the repository root on `bigbo`:
 ```bash
 python3 scripts/run_concept_moderation.py
 python3 scripts/run_competition_mechanism_dml.py
+python3 scripts/run_isolated_competition_pricing.py
 ```
 
 Run the separate idea tests:
@@ -46,6 +48,7 @@ Key files:
 - `results/concept_aligned_moderation/primary_ur_moderation_terms.csv`
 - `results/concept_aligned_moderation/moderation_synthesis.csv`
 - `results/competition_mechanism_dml/competition_mechanism_synthesis.csv`
+- `results/isolated_competition_pricing/triple_interaction_stability.csv`
 - `results/idea_tests/all_idea_terms.csv`
 - `results/idea_tests/significant_idea_terms.csv`
 - `docs/findings_interpretation_table.pdf`
