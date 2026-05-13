@@ -1,0 +1,8 @@
+sample,rows,cities,city_operators,platform_any_rows,unlock_fee_positive_rows,unlock_fee_positive_platform_rows,unlock_fee_ge_0_49_rows,unlock_fee_ge_0_49_platform_rows,unlock_fee_ge_0_75_rows,unlock_fee_ge_0_75_platform_rows,unlock_fee_ge_0_99_rows,unlock_fee_ge_0_99_platform_rows,unlock_fee_ge_1_00_rows,unlock_fee_ge_1_00_platform_rows,unlock_fee_ge_1_20_rows,unlock_fee_ge_1_20_platform_rows
+all,14514,30,97,7894,10384,6487,8854,6334,5893,4840,5443,4714,4579,3904,3435,3237
+no_weak_exposure,13768,30,92,7453,9790,6046,8413,5893,5596,4543,5146,4417,4426,3751,3282,3084
+scooter_only,11149,30,75,6487,9772,6487,8701,6334,5740,4840,5290,4714,4426,3904,3435,3237
+drop_bolt,10383,30,70,7741,7630,6334,7171,6334,5587,4840,5443,4714,4579,3904,3435,3237
+drop_nextbike,11302,30,76,6487,9925,6487,8854,6334,5893,4840,5443,4714,4579,3904,3435,3237
+drop_tier,10538,30,70,4134,6408,2727,4878,2574,1917,1080,1467,954,603,144,0,0
+drop_voi,11778,30,78,5320,7648,3913,6118,3760,4741,3760,4435,3760,4435,3760,3435,3237
