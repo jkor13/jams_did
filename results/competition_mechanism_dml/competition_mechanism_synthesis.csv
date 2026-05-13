@@ -1,0 +1,9 @@
+term,label,n_models,n_positive_sig_05,n_negative_sig_05,median_coef,market_fe_all_ur_coef,market_fe_all_ur_p,unit_fe_all_ur_coef,unit_fe_all_ur_p
+price_per_minute_z:platform_any:competition_z,Price/min:Any platform:Competition,12,0,2,-0.059655310360000546,,,,
+price_per_minute_z:large_only:competition_z,Price/min:FreeNow only:Competition,12,0,0,-0.18633076642677385,0.002281062363444901,0.9864305002705975,-0.0670061344653417,0.6619147271478372
+price_per_minute_z:local_only:competition_z,Price/min:Local MaaS only:Competition,12,3,1,0.0030555592143438164,0.01011733604160728,0.796342161416793,0.9883743725012311,0.001381195462065071
+price_per_minute_z:multi_platform:competition_z,Price/min:Multi-platform:Competition,12,3,5,-0.26054137404936556,-0.02440053508839258,0.7293845864373026,-0.4420458240013474,0.02883182729145947
+unlock_fee_z:platform_any:competition_z,Unlock fee:Any platform:Competition,12,3,2,0.029359872669574936,,,,
+unlock_fee_z:large_only:competition_z,Unlock fee:FreeNow only:Competition,12,3,0,0.06695918134160259,-0.02683124320706908,0.6373649904701201,0.0687927258311894,0.4406846018265882
+unlock_fee_z:local_only:competition_z,Unlock fee:Local MaaS only:Competition,12,4,3,0.008384048424598382,-0.004039729234465949,0.9221978162598232,-0.8428683455546991,0.006375691768215824
+unlock_fee_z:multi_platform:competition_z,Unlock fee:Multi-platform:Competition,12,4,0,0.06285137544920479,0.02279645167637974,0.40770545710043893,1.1265875514301456,0.001479172212567885

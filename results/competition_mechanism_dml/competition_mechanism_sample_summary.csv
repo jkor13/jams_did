@@ -1,0 +1,4 @@
+sample,rows,cities,city_operators,mean_competition,platform_any_rows,large_only_rows,local_only_rows,multi_platform_rows
+all,14514,30,97,12.79681686647375,7894,4079,1686,2129
+no_weak_exposure,13768,30,92,12.863959907030797,7453,3638,1686,2129
+scooter_only,11149,30,75,12.858642030675396,6487,4079,279,2129
