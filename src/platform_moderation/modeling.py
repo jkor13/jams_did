@@ -26,7 +26,23 @@ def fit_ols_cluster(
     fe_strategy: str | None = None,
 ) -> list[dict[str, object]]:
     model = smf.ols(formula, data=data).fit(cov_type="cluster", cov_kwds={"groups": data["city_operator"]})
-    (out_dir / f"{name}_{outcome}_summary.txt").write_text(str(model.summary()), encoding="utf-8")
+    summary_path = out_dir / f"{name}_{outcome}_summary.txt"
+    try:
+        summary_text = str(model.summary())
+    except Exception as exc:
+        fallback = pd.DataFrame(
+            {
+                "coef": model.params,
+                "std_err": model.bse,
+                "p_value": model.pvalues,
+            }
+        )
+        summary_text = (
+            f"statsmodels summary() failed with {type(exc).__name__}: {exc}\n"
+            "Fallback coefficient table follows.\n\n"
+            f"{fallback.to_string()}\n"
+        )
+    summary_path.write_text(summary_text, encoding="utf-8")
     conf = model.conf_int()
     rows = []
     for term in focus_terms:
@@ -142,4 +158,3 @@ def dml_residualize(
             }
         )
     return rows
-

@@ -1,0 +1,9 @@
+term,label,n_models,n_positive_sig_05,n_negative_sig_05,median_coef,all_ur_market_fe_coef,all_ur_market_fe_p,all_ur_unit_fe_coef,all_ur_unit_fe_p
+price_per_minute_z:platform_any:comparison_intensity_z,Price/min:Any platform:comparison_intensity_z,6,0,1,-0.015814567638795164,0.01855908518151108,0.566420774856842,-0.005979672904104466,0.704575127223363
+price_per_minute_z_x_platform_any_x_comparison_intensity_z,Price/min_x_Any platform_x_comparison_intensity_z,4,0,1,-0.017727865277054656,,,,
+unlock_fee_z:platform_any:comparison_intensity_z,Unlock fee:Any platform:comparison_intensity_z,6,0,0,-0.003943124753087574,-0.046629293173788194,0.07375978387141653,0.0007671486320217729,0.9675139914846107
+unlock_fee_z:local_maas_only:comparison_intensity_z,Unlock fee:Local MaaS only:comparison_intensity_z,6,0,0,0.006570152932688747,0.029355702628619727,0.17630719689482155,0.006801340874348483,0.6572006771703389
+unlock_fee_z:multi_platform:comparison_intensity_z,Unlock fee:Multi-platform:comparison_intensity_z,6,0,0,0.010808182082190589,0.02114784216639412,0.3186702628704241,0.022479192068053714,0.21567386093795715
+unlock_fee_z_x_platform_any_x_comparison_intensity_z,Unlock fee_x_Any platform_x_comparison_intensity_z,4,1,0,0.00045797715401875135,,,,
+unlock_fee_z_x_local_maas_only_x_comparison_intensity_z,Unlock fee_x_Local MaaS only_x_comparison_intensity_z,4,1,0,-0.016540172888286547,,,,
+unlock_fee_z_x_multi_platform_x_comparison_intensity_z,Unlock fee_x_Multi-platform_x_comparison_intensity_z,4,0,0,0.009472447536951834,,,,
