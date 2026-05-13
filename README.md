@@ -13,13 +13,9 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 - `docs/findings_interpretation_table.tex`: findings table source
 - `docs/findings_interpretation_table.pdf`: compiled findings table
 
-## Input
+## Data
 
-The scripts expect the clean typed panel on `bigbo`:
-
-```text
-~/dev/ewgt_multilevel_model/outputs/reports/platform_feature_research/platform_types/JAMS_df_platform_clean_typed.csv
-```
+The clean typed panel is included in `data/JAMS_df_platform_clean_typed.csv`. See `data/README.md` for the platform-membership coding.
 
 ## Run
 
