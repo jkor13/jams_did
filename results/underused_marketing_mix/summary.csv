@@ -1,0 +1,17 @@
+feature,term,label,n_models,n_negative_sig_05,n_positive_sig_05,median_coef,all_market_fe_coef,all_market_fe_p,all_unit_fe_coef,all_unit_fe_p
+complementary_services,complementary_services:platform_any,complementary_services:Any platform,6,3,0,-0.009192296425792074,-0.04843109792473957,0.2464778766410861,-0.006813832740735696,0.008041569378548755
+group_ride,group_ride:local_maas_only,group_ride:Local MaaS only,6,3,0,-0.05191625647757133,-0.12950644289473467,,-0.051819314446302195,0.0017812041628073331
+group_ride,group_ride:multi_platform,group_ride:Multi-platform,6,3,0,-0.08689183247785238,-0.12057650206408205,0.999974297008041,-0.08697622125715947,6.576272959270333e-07
+complementary_services,complementary_services:large_aggregator_only,complementary_services:FreeNow only,6,2,3,9.875298824974418e-18,-1.0538304662712178e-17,3.176218733830275e-15,4.371268827091379e-17,6.074530919757113e-55
+no_of_vehicle_types_z,no_of_vehicle_types_z:large_aggregator_only,no_of_vehicle_types_z:FreeNow only,6,2,1,-0.005981622685749965,-0.03621319108700176,0.015280788008236169,0.005223027529291305,0.1665891887305656
+subscription_options,subscription_options:local_maas_only,subscription_options:Local MaaS only,6,2,1,-0.18171844534211962,-0.22094400907179257,4.655924936253745e-05,-67828569659.91465,
+subscription_options,subscription_options:platform_any,subscription_options:Any platform,6,2,1,-0.08261034665275856,-0.2605558841294244,1.896461016292773e-06,-144833122895.987,0.9999991393292064
+complementary_services,complementary_services:multi_platform,complementary_services:Multi-platform,6,1,5,1.7210887105562772e-17,2.0786045394920296e-17,1.1217666034994526e-29,1.3635728816205249e-17,8.947624061312753e-11
+no_of_vehicle_types_z,no_of_vehicle_types_z:platform_any,no_of_vehicle_types_z:Any platform,6,1,1,-0.006175834987257981,-0.02324222998305606,0.1001237938355913,0.004726882466018809,0.07949028123842942
+no_of_vehicle_types_z,no_of_vehicle_types_z:multi_platform,no_of_vehicle_types_z:Multi-platform,6,0,3,0.0020188943430924076,-0.007284682145588683,0.6456131800844211,0.01411898733107596,0.014488171427632056
+no_of_vehicle_types_z,no_of_vehicle_types_z:local_maas_only,no_of_vehicle_types_z:Local MaaS only,6,0,1,0.00034137898351657703,-0.033602909011757935,0.09355768765488777,0.004361175169833809,0.591086014927297
+complementary_services,complementary_services:local_maas_only,complementary_services:Local MaaS only,6,0,0,-0.001591834779073446,-0.08548918014146314,0.05426485433939432,0.001927840283603014,0.7458210231992897
+group_ride,group_ride:large_aggregator_only,group_ride:FreeNow only,6,0,0,-0.015056071570801617,-0.03131284325377635,0.9999943651965959,-0.015168690839880674,0.34159877685588635
+group_ride,group_ride:platform_any,group_ride:Any platform,6,0,0,-0.013089938468995518,-0.12497134878235033,,-0.01306021672370984,0.401744140351307
+subscription_options,subscription_options:large_aggregator_only,subscription_options:FreeNow only,6,0,0,-0.005101642673458212,0.007905020116524926,0.3346745987506802,-787230857.4007608,
+subscription_options,subscription_options:multi_platform,subscription_options:Multi-platform,6,0,0,-0.014904004374133037,-0.015171323928098076,0.27907559719437225,-575527225.8874016,

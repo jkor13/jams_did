@@ -223,6 +223,65 @@ This file tracks the current empirical findings for the platform membership mode
 
 The strongest storyline is: **platform membership transforms pricing and promotion effectiveness by increasing the salience of comparable mobility options.** The most robust negative effect is not platform membership itself, but the interaction between platform membership and salient upfront pricing frictions, especially high unlock fees. Capacity utilisation remains the cleanest primary outcome, while trip volume provides supporting evidence for the Local MaaS mechanism. The most promising positive counterpoint is that promotions reducing marginal usage cost, especially subscriber-free-minutes promotions, can perform well in multi-platform contexts, but promotion evidence is localized. Competition and city context help explain when the mechanism may be stronger, but current evidence supports them as boundary probes rather than central claims.
 
+## Marketing-Mix Feature Expansion
+
+Online and provider-documentation research suggests several additional marketing-mix features that could strengthen the analysis.
+
+**Immediately testable with current data:**
+
+- `group_ride`: product/social-use affordance with good variation (`8,413/14,514` rows).
+- `no_of_vehicle_types`: product assortment proxy with values 1, 2, and 3.
+- `complementary_services`: multimodal/service-bundling proxy, sparse but meaningful (`1,224` rows).
+- `subscription_options`: broad pass/subscription indicator, but weak standalone variation (`13,749/14,514` rows are `1`).
+
+**Best external-coding candidates:**
+
+- Pass/free-unlock/minute-bundle intensity by provider-city-date.
+- Reservation availability and reservation duration.
+- Mandatory parking/station-return/out-of-zone fee rules.
+- Referral or new-user credit campaigns.
+- Monthly app ratings/review volume as digital service-quality proxy.
+
+**Interpretation:** The highest-value extension is not another generic promotion flag, but richer coding of **pricing architecture** and **usage-friction reducers**: free unlock passes, minute bundles, reservation, and return/parking friction. These map directly onto the high-unlock-fee salience mechanism.
+
+**Reference:** `results/feature_research/marketing_mix_feature_research.md`; `results/feature_research/marketing_mix_feature_opportunities.csv`.
+
+## Underused Marketing-Mix Feature Findings
+
+### F13. Group ride availability is a plausible product-affordance moderator, but the sign is negative.
+
+**Status:** Moderate candidate.
+
+**Evidence:** In the underused marketing-mix tests, `group_ride:local_maas_only` is negative in 3/6 models: `all unit FE = -0.052` (`p = 0.0018`), no-weak unit FE `-0.052` (`p = 0.0018`), and scooter unit FE `-0.051` (`p = 0.039`). `group_ride:multi_platform` is also negative in 3/6 models: `all unit FE = -0.087` (`p < 0.001`), no-weak unit FE `-0.087` (`p < 0.001`), and scooter unit FE `-0.086` (`p < 0.001`).
+
+**Interpretation:** Group ride should not be framed as a straightforward utilisation booster. It may mark a social/product affordance that is poorly aligned with platform-mediated utilisation, or it may proxy product positioning in lower-utilisation city-operator settings.
+
+**Caveat:** Evidence is mainly within-unit; market-FE estimates are unstable or not interpretable for this feature.
+
+**Reference:** `results/underused_marketing_mix/curated_findings.csv`; `results/underused_marketing_mix/summary.csv`.
+
+### F14. Vehicle-type breadth may be a positive product-assortment feature in scooter markets.
+
+**Status:** Exploratory candidate.
+
+**Evidence:** In scooter-only unit FE, `no_of_vehicle_types_z` interactions are positive for any platform (`0.013`, `p < 0.001`), Local MaaS (`0.023`, `p < 0.001`), multi-platform (`0.030`, `p < 0.001`), and large aggregator (`0.014`, `p < 0.001`).
+
+**Interpretation:** Product assortment may help platform contexts by offering better modal fit within the same city-operator setting, especially in scooter-relevant markets.
+
+**Caveat:** Evidence is strongest only in scooter-only unit FE; market-FE and full-sample evidence is mixed.
+
+**Reference:** `results/underused_marketing_mix/curated_findings.csv`; `results/underused_marketing_mix/significant_terms.csv`.
+
+### F15. The current subscription_options dummy is not usable as a central marketing-mix feature.
+
+**Status:** Negative evidence.
+
+**Evidence:** `subscription_options` equals `1` in 13,749 of 14,514 rows and 10,996 of 11,149 scooter rows. Some unit-FE models produce implausibly huge coefficients, indicating near-collinearity or weak support.
+
+**Interpretation:** We should not use the broad current subscription dummy as a main effect. The theoretically relevant construct is richer pass intensity: free unlocks, minute bundles, monthly subscription, and public-transport subscriber benefits.
+
+**Reference:** `results/underused_marketing_mix/curated_findings.csv`; `results/underused_marketing_mix/sample_summary.csv`.
+
 ## Next Tests
 
 1. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
@@ -230,3 +289,4 @@ The strongest storyline is: **platform membership transforms pricing and promoti
 3. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
 4. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
 5. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
+6. If more external coding is feasible, prioritize pass/free-unlock/minute-bundle intensity over the current broad `subscription_options` dummy.
