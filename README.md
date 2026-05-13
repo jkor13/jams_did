@@ -12,6 +12,7 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 - `scripts/run_isolated_competition_pricing.py`: isolated competition-pricing mechanism tests
 - `scripts/run_deep_dive_effects.py`: additional exploratory mechanism and boundary-condition probes
 - `scripts/run_threshold_robustness.py`: alternative unlock-fee threshold checks
+- `scripts/run_city_sensitivity.py`: leave-one-city checks for platform-type threshold effects
 - `scripts/run_idea_*.py`: seven separate JAMS story-extension tests
 - `scripts/run_all_idea_tests.py`: runs all seven idea tests
 - `results/`: curated CSV outputs used for interpretation
@@ -32,6 +33,7 @@ python3 scripts/run_competition_mechanism_dml.py
 python3 scripts/run_isolated_competition_pricing.py
 python3 scripts/run_deep_dive_effects.py
 python3 scripts/run_threshold_robustness.py
+python3 scripts/run_city_sensitivity.py
 ```
 
 Run the separate idea tests:
@@ -55,6 +57,7 @@ Key files:
 - `results/isolated_competition_pricing/triple_interaction_stability.csv`
 - `results/deep_dive_effects/curated_findings.csv`
 - `results/threshold_robustness/curated_findings.csv`
+- `results/city_sensitivity/curated_findings.csv`
 - `results/idea_tests/all_idea_terms.csv`
 - `findings.md`
 - `results/idea_tests/significant_idea_terms.csv`

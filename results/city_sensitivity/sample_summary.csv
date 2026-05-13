@@ -1,0 +1,16 @@
+sample,dropped_city,rows,cities,city_operators,local_maas_rows,multi_platform_rows,unlock_fee_ge_0_99_local_maas_rows,unlock_fee_ge_0_99_multi_platform_rows,unlock_fee_ge_1_00_local_maas_rows,unlock_fee_ge_1_00_multi_platform_rows,unlock_fee_ge_1_20_local_maas_rows,unlock_fee_ge_1_20_multi_platform_rows
+all,,14514,30,97,1686,2129,108,1578,90,1308,72,1029
+no_weak_exposure,,13768,30,92,1686,2129,108,1578,90,1308,72,1029
+drop_berlin,BERLIN,13911,29,93,1380,1832,108,1425,90,1155,72,1029
+drop_bielefeld,BIELEFELD,14055,29,94,1533,2129,108,1578,90,1308,72,1029
+drop_bonn,BONN,13911,29,93,1515,1994,90,1443,72,1173,54,894
+drop_cologne,COLOGNE,13911,29,93,1686,1976,108,1425,90,1155,72,876
+drop_duesseldorf,DUESSELDORF,13758,29,92,1533,1839,108,1425,90,1155,72,876
+drop_hamburg,HAMBURG,13911,29,93,1686,1832,108,1281,90,1155,72,876
+drop_heidelberg,HEIDELBERG,14055,29,94,1515,1994,90,1443,72,1173,54,894
+drop_kaiserslautern,KAISERSLAUTERN,14208,29,95,1515,1994,90,1443,72,1173,54,894
+drop_karlsruhe,KARLSRUHE,13982,29,93,1515,2003,90,1452,90,1308,72,1029
+drop_leipzig,LEIPZIG,14064,29,94,1515,2003,90,1452,72,1182,72,1029
+drop_mannheim,MANNHEIM,14055,29,94,1515,1994,90,1443,72,1173,54,894
+drop_munich,MUNICH,14064,29,94,1686,1985,108,1578,90,1308,72,1029
+drop_nuremberg,NUREMBERG,13911,29,93,1668,2003,108,1578,90,1308,72,1029

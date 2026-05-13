@@ -43,15 +43,27 @@ This file tracks the current empirical findings for the platform membership mode
 
 **Reference:** `results/deep_dive_effects/curated_findings.csv`; `results/deep_dive_effects/summary.csv`; `results/threshold_robustness/curated_findings.csv`; `results/threshold_robustness/summary.csv`.
 
+### F3a. The high-unlock-fee platform-type result is not driven by a single platform city.
+
+**Status:** Robust.
+
+**Evidence:** Leave-one-platform-city tests drop each of 13 relevant platform cities one at a time. For Local MaaS, EUR 0.99, EUR 1.00, and EUR 1.20 thresholds remain negative and significant in 13/13 city-drop models under both market FE and unit FE. Median market-FE coefficients are `-0.199`, `-0.209`, and `-0.218`; median unit-FE coefficients are `-0.044`, `-0.035`, and `-0.038`. For multi-platform membership, EUR 1.00 and EUR 1.20 thresholds are negative and significant in 13/13 city-drop models under both market FE and unit FE.
+
+**Interpretation:** The strongest threshold result is not explained by one specific platform city such as Berlin, Hamburg, Düsseldorf, Karlsruhe, or Leipzig. This materially strengthens the claim that Local MaaS and multi-platform contexts amplify salient unlock-fee penalties.
+
+**Caveat:** The EUR 0.99 multi-platform threshold is directionally stable but weaker in market FE: all 13 city-drop coefficients remain negative, but only 9/13 are significant.
+
+**Reference:** `results/city_sensitivity/curated_findings.csv`; `results/city_sensitivity/leave_one_city_stability.csv`.
+
 ### F4. Local MaaS membership is a stronger unlock-fee boundary condition than Free Now alone.
 
-**Status:** Moderate.
+**Status:** Robust.
 
-**Evidence:** In platform-type boundary tests, `unlock_fee_z:local_maas_only` is negative in 2/4 models and strongly negative in market FE (`-0.071`, `p = 0.001`). In concept-aligned models, `unlock_fee_z:local_maas_only` has median coefficient `-0.237` and `market FE all = -0.107` (`p < 0.001`). Free Now-only unlock-fee effects are weaker and not consistently significant.
+**Evidence:** In platform-type boundary tests, `unlock_fee_z:local_maas_only` is negative in 2/4 models and strongly negative in market FE (`-0.071`, `p = 0.001`). In concept-aligned models, `unlock_fee_z:local_maas_only` has median coefficient `-0.237` and `market FE all = -0.107` (`p < 0.001`). Threshold robustness and leave-one-city tests strengthen this finding: Local MaaS high-unlock-fee interactions remain negative and significant across all tested city drops for EUR 0.99, EUR 1.00, and EUR 1.20 thresholds.
 
 **Interpretation:** The strongest version of the platform membership mechanism is not “large aggregator membership” in general; it appears more pronounced in local MaaS and integrated platform contexts where the service is embedded in a broader urban mobility interface.
 
-**Reference:** `results/concept_aligned_moderation/moderation_synthesis.csv`; `results/idea_tests/03_platform_type_boundary/summary.csv`.
+**Reference:** `results/concept_aligned_moderation/moderation_synthesis.csv`; `results/idea_tests/03_platform_type_boundary/summary.csv`; `results/threshold_robustness/curated_findings.csv`; `results/city_sensitivity/curated_findings.csv`.
 
 ### F4a. Free Now-only does not show a stable high-unlock-fee threshold penalty.
 
@@ -173,7 +185,7 @@ The strongest storyline is: **platform membership transforms pricing and promoti
 
 ## Next Tests
 
-1. Test whether the threshold effect is driven by specific platform cities rather than platform types.
-2. Test dynamic versions of the maturity result using lags or bins rather than a single linear maturity interaction.
-3. Re-test promotion-type findings with event-window restrictions around the relevant promotion periods.
-4. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
+1. Test dynamic versions of the maturity result using lags or bins rather than a single linear maturity interaction.
+2. Re-test promotion-type findings with event-window restrictions around the relevant promotion periods.
+3. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
+4. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
