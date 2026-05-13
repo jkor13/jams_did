@@ -1,0 +1,4 @@
+sample,rows,cities,city_operators,platform_any_rows,multi_platform_rows,mean_platform_count,mean_platform_maturity_days,high_unlock_fee_rows,zero_unlock_fee_rows,promo_voucher_rows,promo_subscriber_rows,promo_parking_rows
+all,14514,30,97,7894,2129,0.6905746176105829,369.88769463965826,4579,4130,450,144,144
+no_weak_exposure,13768,30,92,7453,2129,0.6959616502033701,353.05229517722256,4426,3978,450,144,0
+scooter_only,11149,30,75,6487,2129,0.7728047358507489,377.6401470983945,4426,1377,297,144,144
