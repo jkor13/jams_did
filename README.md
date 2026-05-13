@@ -15,6 +15,7 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 - `scripts/run_city_sensitivity.py`: leave-one-city checks for platform-type threshold effects
 - `scripts/run_maturity_diagnostics.py`: maturity support and high-fee timing diagnostics
 - `scripts/run_promotion_diagnostics.py`: support diagnostics for promotion-type findings
+- `scripts/run_outcome_robustness.py`: capacity-utilisation versus trip-volume robustness
 - `scripts/run_idea_*.py`: seven separate JAMS story-extension tests
 - `scripts/run_all_idea_tests.py`: runs all seven idea tests
 - `results/`: curated CSV outputs used for interpretation
@@ -38,6 +39,7 @@ python3 scripts/run_threshold_robustness.py
 python3 scripts/run_city_sensitivity.py
 python3 scripts/run_maturity_diagnostics.py
 python3 scripts/run_promotion_diagnostics.py
+python3 scripts/run_outcome_robustness.py
 ```
 
 Run the separate idea tests:
@@ -64,6 +66,7 @@ Key files:
 - `results/city_sensitivity/curated_findings.csv`
 - `results/maturity_diagnostics/curated_findings.csv`
 - `results/promotion_diagnostics/curated_findings.csv`
+- `results/outcome_robustness/curated_findings.csv`
 - `results/idea_tests/all_idea_terms.csv`
 - `findings.md`
 - `results/idea_tests/significant_idea_terms.csv`

@@ -55,6 +55,16 @@ This file tracks the current empirical findings for the platform membership mode
 
 **Reference:** `results/city_sensitivity/curated_findings.csv`; `results/city_sensitivity/leave_one_city_stability.csv`.
 
+### F3b. Local MaaS high-fee penalties generalize from utilisation to trip volume; multi-platform is cleaner for utilisation than demand.
+
+**Status:** Robust for Local MaaS; moderate for multi-platform.
+
+**Evidence:** Outcome-robustness tests estimate the same EUR 1.00 and EUR 1.20 high-unlock-fee platform-type interactions for both `ur_boxcox` and `log_trip_count_day`. For `ur_boxcox`, Local MaaS and multi-platform interactions are negative in 6/6 models at both thresholds. For `log_trip_count_day`, Local MaaS is also negative in 6/6 models; full-sample estimates are `-1.014` in market FE (`p < 0.001`) and `-0.130` in unit FE (`p < 0.001`) at EUR 1.00, and `-1.054` in market FE (`p < 0.001`) and `-0.126` in unit FE (`p < 0.001`) at EUR 1.20. Multi-platform log-trip effects are negative in 4/6 models and strongly negative in market FE, but not significant in full-sample unit FE.
+
+**Interpretation:** The Local MaaS pricing-friction result is not only a capacity-ratio artifact; it also appears as lower trip volume. Multi-platform evidence is strongest for capacity utilisation and should be framed more cautiously for demand volume.
+
+**Reference:** `results/outcome_robustness/curated_findings.csv`; `results/outcome_robustness/summary.csv`.
+
 ### F4. Local MaaS membership is a stronger unlock-fee boundary condition than Free Now alone.
 
 **Status:** Robust.
@@ -211,7 +221,7 @@ This file tracks the current empirical findings for the platform membership mode
 
 ## Current Storyline
 
-The strongest storyline is: **platform membership transforms pricing and promotion effectiveness by increasing the salience of comparable mobility options.** The most robust negative effect is not platform membership itself, but the interaction between platform membership and salient upfront pricing frictions, especially high unlock fees. The most promising positive counterpoint is that promotions reducing marginal usage cost, especially subscriber-free-minutes promotions, can perform well in multi-platform contexts. Competition and city context help explain when the mechanism may be stronger, but current evidence supports them as boundary probes rather than central claims.
+The strongest storyline is: **platform membership transforms pricing and promotion effectiveness by increasing the salience of comparable mobility options.** The most robust negative effect is not platform membership itself, but the interaction between platform membership and salient upfront pricing frictions, especially high unlock fees. Capacity utilisation remains the cleanest primary outcome, while trip volume provides supporting evidence for the Local MaaS mechanism. The most promising positive counterpoint is that promotions reducing marginal usage cost, especially subscriber-free-minutes promotions, can perform well in multi-platform contexts, but promotion evidence is localized. Competition and city context help explain when the mechanism may be stronger, but current evidence supports them as boundary probes rather than central claims.
 
 ## Next Tests
 
@@ -219,3 +229,4 @@ The strongest storyline is: **platform membership transforms pricing and promoti
 2. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
 3. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
 4. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
+5. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
