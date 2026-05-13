@@ -125,6 +125,26 @@ This file tracks the current empirical findings for the platform membership mode
 
 **Reference:** `results/threshold_robustness/curated_findings.csv`; `results/threshold_robustness/significant_terms.csv`.
 
+### F7b. High-fee Local MaaS and multi-platform effects are mature-platform effects, but maturity is not separately identified there.
+
+**Status:** Identification caveat.
+
+**Evidence:** Maturity diagnostics show that Local MaaS and multi-platform high-fee observations occur almost exclusively in mature platform phases. For Local MaaS, early and mid maturity segments have zero observations with `unlock_fee_ge_1_00` or `unlock_fee_ge_1_20`; high-fee observations occur only in `mature_366_plus` rows (`90` rows for EUR 1.00; `72` rows for EUR 1.20). For multi-platform, early and mid maturity segments also have zero high-fee observations; high-fee observations occur only in mature rows (`1308` rows for EUR 1.00; `1029` rows for EUR 1.20).
+
+**Interpretation:** The high-unlock-fee Local MaaS/Multi-platform finding should be described as a mature-platform pricing-friction effect. The current panel cannot cleanly distinguish whether the mechanism is high-fee salience, platform maturity, or their combination for these platform types.
+
+**Reference:** `results/maturity_diagnostics/curated_findings.csv`; `results/maturity_diagnostics/maturity_support.csv`.
+
+### F7c. Large aggregator maturity does not create a stronger high-fee penalty over time.
+
+**Status:** Negative evidence.
+
+**Evidence:** For large aggregator membership, high-fee variation exists in both early and mature segments. The maturity triple is positive, not negative: `unlock_fee_ge_1_00:large_aggregator_only:mature_366_plus` has `market FE all = 0.197` (`p < 0.001`) and `unit FE all = 0.083` (`p < 0.001`); the EUR 1.20 triple is also positive (`market FE all = 0.228`, `p < 0.001`; `unit FE all = 0.074`, `p < 0.001`).
+
+**Interpretation:** For Free Now-style large aggregator exposure, the data do not support a simple “platform maturity strengthens the high-fee penalty” mechanism. If anything, the high-fee penalty is stronger in early aggregator exposure and attenuates in mature exposure.
+
+**Reference:** `results/maturity_diagnostics/curated_findings.csv`; `results/maturity_diagnostics/summary.csv`.
+
 ### F8. Weak exposure behaves differently and should not be pooled with true platform membership.
 
 **Status:** Robust data-design decision.
@@ -185,7 +205,7 @@ The strongest storyline is: **platform membership transforms pricing and promoti
 
 ## Next Tests
 
-1. Test dynamic versions of the maturity result using lags or bins rather than a single linear maturity interaction.
-2. Re-test promotion-type findings with event-window restrictions around the relevant promotion periods.
-3. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
-4. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
+1. Re-test promotion-type findings with event-window restrictions around the relevant promotion periods.
+2. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
+3. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
+4. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
