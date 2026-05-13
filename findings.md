@@ -282,6 +282,40 @@ Online and provider-documentation research suggests several additional marketing
 
 **Reference:** `results/underused_marketing_mix/curated_findings.csv`; `results/underused_marketing_mix/sample_summary.csv`.
 
+### F16. Vehicle-type breadth appears to buffer Local MaaS high-unlock-fee penalties.
+
+**Status:** Moderate candidate.
+
+**Evidence:** In feature-fee moderation tests, `unlock_fee_ge_1_00:local_maas_only:no_of_vehicle_types_z` is positive in 6/6 models: `all market FE = 0.074` (`p < 0.001`), `all unit FE = 0.014` (`p < 0.001`), no-weak market FE `0.052` (`p < 0.001`), and scooter market FE `0.029` (`p = 0.0067`). The EUR 1.20 interaction is positive in 5/6 models, with `all market FE = 0.075` (`p < 0.001`) and `all unit FE = 0.014` (`p < 0.001`).
+
+**Interpretation:** Product assortment may reduce the harm of high upfront fees in Local MaaS contexts. This gives the story a useful marketing-mix nuance: pricing frictions are harmful, but broader product assortment can partially buffer the penalty by improving modal fit.
+
+**Caveat:** The buffering effect is Local MaaS-specific; multi-platform evidence is mixed and should not be generalized.
+
+**Reference:** `results/feature_fee_moderation/curated_findings.csv`; `results/feature_fee_moderation/summary.csv`.
+
+### F17. Group ride does not buffer high unlock fees; if anything, it amplifies Local MaaS penalties within units.
+
+**Status:** Exploratory candidate.
+
+**Evidence:** `group_ride` triple interactions are negative for Local MaaS in unit-FE models. At EUR 1.00: `all unit FE = -0.039` (`p < 0.001`), no-weak unit FE `-0.035` (`p < 0.001`), scooter unit FE `-0.026` (`p < 0.001`). At EUR 1.20: `all unit FE = -0.011` (`p = 0.003`), no-weak unit FE `-0.007` (`p = 0.048`), scooter unit FE `-0.021` (`p < 0.001`).
+
+**Interpretation:** Group ride should not be positioned as a friction reducer. In Local MaaS settings, it may mark a product usage mode or provider positioning where high upfront fees are especially harmful.
+
+**Caveat:** Support is narrow because high-fee Local MaaS rows often have `group_ride = 1`, especially at EUR 1.20.
+
+**Reference:** `results/feature_fee_moderation/curated_findings.csv`; `results/feature_fee_moderation/significant_terms.csv`.
+
+### F18. Complementary services cannot explain the high-fee platform penalty with current data.
+
+**Status:** Negative evidence.
+
+**Evidence:** In the high-fee Local MaaS and multi-platform support table, `complementary_services` has zero nonzero observations. The estimated complementary-services triple coefficients are effectively zero with tiny p-values, indicating collinearity rather than interpretable effects.
+
+**Interpretation:** Complementary services require richer service coding before they can be used as a high-fee buffer or amplifier.
+
+**Reference:** `results/feature_fee_moderation/curated_findings.csv`; `results/feature_fee_moderation/sample_summary.csv`.
+
 ## Next Tests
 
 1. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
@@ -290,3 +324,4 @@ Online and provider-documentation research suggests several additional marketing
 4. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
 5. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
 6. If more external coding is feasible, prioritize pass/free-unlock/minute-bundle intensity over the current broad `subscription_options` dummy.
+7. If adding a product-side moderator to the paper story, prioritize vehicle-type breadth as a Local MaaS buffer; keep group ride as exploratory and avoid complementary-services claims.

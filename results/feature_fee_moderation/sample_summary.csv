@@ -1,0 +1,7 @@
+sample,platform_type,rows,cities,city_operators,unlock_fee_ge_1_00_rows,unlock_fee_ge_1_00_group_ride_mean,unlock_fee_ge_1_00_group_ride_nonzero_rows,unlock_fee_ge_1_00_no_of_vehicle_types_z_mean,unlock_fee_ge_1_00_no_of_vehicle_types_z_nonzero_rows,unlock_fee_ge_1_00_complementary_services_mean,unlock_fee_ge_1_00_complementary_services_nonzero_rows,unlock_fee_ge_1_20_rows,unlock_fee_ge_1_20_group_ride_mean,unlock_fee_ge_1_20_group_ride_nonzero_rows,unlock_fee_ge_1_20_no_of_vehicle_types_z_mean,unlock_fee_ge_1_20_no_of_vehicle_types_z_nonzero_rows,unlock_fee_ge_1_20_complementary_services_mean,unlock_fee_ge_1_20_complementary_services_nonzero_rows
+all,local_maas_only,1686,11,18,90,0.8,72,-0.4274917949982711,90,0.0,0,72,1.0,72,-0.42749179499827117,72,0.0,0
+all,multi_platform,2129,13,16,1308,0.9036697247706422,1182,0.6406013507404678,1308,0.0,0,1029,1.0,1029,0.5907777637672321,1029,0.0,0
+no_weak_exposure,local_maas_only,1686,11,18,90,0.8,72,-0.4274917949982711,90,0.0,0,72,1.0,72,-0.42749179499827117,72,0.0,0
+no_weak_exposure,multi_platform,2129,13,16,1308,0.9036697247706422,1182,0.6406013507404678,1308,0.0,0,1029,1.0,1029,0.5907777637672321,1029,0.0,0
+scooter_only,local_maas_only,279,8,8,90,0.8,72,-0.4274917949982711,90,0.0,0,72,1.0,72,-0.42749179499827117,72,0.0,0
+scooter_only,multi_platform,2129,13,16,1308,0.9036697247706422,1182,0.6406013507404678,1308,0.0,0,1029,1.0,1029,0.5907777637672321,1029,0.0,0
