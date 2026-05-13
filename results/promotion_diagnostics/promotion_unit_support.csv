@@ -1,0 +1,6 @@
+promo_type,city_operator,city,operator,rows,promo_rows,nonpromo_rows,has_within_unit_switch,promo_min_date,promo_max_date
+voucher_20eur_limited_eligibility,BERLIN_BOLT,BERLIN,BOLT,153,153,0,False,2024-03-11,2024-08-22
+voucher_20eur_limited_eligibility,BERLIN_NEXTBIKE,BERLIN,NEXTBIKE,153,153,0,False,2024-03-11,2024-08-22
+voucher_20eur_limited_eligibility,BERLIN_VOI,BERLIN,VOI,144,144,0,False,2024-03-11,2024-08-22
+subscriber_free_minutes_15_per_month,NUREMBERG_VOI,NUREMBERG,VOI,144,144,0,False,2024-03-11,2024-08-22
+parking_station_credit_0_50_eur,STUTTGART_VOI,STUTTGART,VOI,144,144,0,False,2024-03-11,2024-08-22

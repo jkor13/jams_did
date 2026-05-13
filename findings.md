@@ -89,15 +89,25 @@ This file tracks the current empirical findings for the platform membership mode
 
 ### F6. Subscriber-free-minutes promotions fit multi-platform exposure especially well.
 
-**Status:** Moderate candidate.
+**Status:** Exploratory mechanism candidate.
 
 **Evidence:** In the deep-dive promotion-type test, `promo_subscriber_minutes:platform_any` is positive in 4/4 models (`market FE = 0.051`, `p < 0.001`; `unit FE = 0.026`, `p < 0.001`). `promo_subscriber_minutes:multi_platform` is also positive in 4/4 models (`market FE = 0.122`, `p < 0.001`; `unit FE = 0.043`, `p < 0.001`). The same promotion type is negative for `local_maas_only` (`market FE = -0.081`, `p = 0.0035`; `unit FE = -0.011`, `p = 0.049`).
 
 **Interpretation:** Promotion effectiveness appears to depend on fit between the promotion design and the platform architecture: usage-cost-reducing promotions work especially well in multi-platform discovery contexts, but not necessarily in local MaaS contexts.
 
-**Caveat:** Only 144 subscriber-free-minutes observations; use as a mechanism probe.
+**Caveat:** Promotion diagnostics show that this is not event-window identified. Subscriber-free-minutes occurs only for VOI in Nuremberg (`144` rows), parking credit only for VOI in Stuttgart (`144` rows), and the EUR 20 voucher only in Berlin across BOLT, NEXTBIKE, and VOI (`450` rows). In each treated city-operator cell, promo rows cover the observed period without within-unit switching.
 
-**Reference:** `results/deep_dive_effects/curated_findings.csv`; `results/deep_dive_effects/summary.csv`.
+**Reference:** `results/deep_dive_effects/curated_findings.csv`; `results/deep_dive_effects/summary.csv`; `results/promotion_diagnostics/curated_findings.csv`; `results/promotion_diagnostics/promotion_unit_support.csv`.
+
+### F6a. Promotion-type coefficients are campaign-context diagnostics, not causal event-window estimates.
+
+**Status:** Identification caveat.
+
+**Evidence:** Promotion diagnostics show no useful within-unit switching for the three observed promotion types. Voucher observations are limited to Berlin (`450` rows across BOLT, NEXTBIKE, and VOI), subscriber-free-minutes to Nuremberg VOI (`144` rows), and parking credit to Stuttgart VOI (`144` rows). Treated city-operator cells have `0` non-promo rows in the observed panel.
+
+**Interpretation:** Promotion findings can still support theory about promotion-channel fit, but they should be written as localized mechanism evidence rather than robust causal estimates.
+
+**Reference:** `results/promotion_diagnostics/curated_findings.csv`; `results/promotion_diagnostics/promotion_type_support.csv`; `results/promotion_diagnostics/promotion_unit_support.csv`.
 
 ## Platform Heterogeneity Findings
 
@@ -205,7 +215,7 @@ The strongest storyline is: **platform membership transforms pricing and promoti
 
 ## Next Tests
 
-1. Re-test promotion-type findings with event-window restrictions around the relevant promotion periods.
-2. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
-3. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
-4. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
+1. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
+2. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
+3. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
+4. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
