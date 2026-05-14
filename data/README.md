@@ -5,6 +5,9 @@ This folder contains the clean platform-membership data used by the analysis.
 ## Files
 
 - `JAMS_df_platform_clean_typed.csv`: full city-operator-day panel with platform flags, marketing variables, controls, and outcomes.
+- `JAMS_df_platform_extended_features.csv`: full panel plus extended competition and marketing-mix features.
+- `extended_competition_marketing_features.csv`: compact city-operator-day feature table for merging into analyses.
+- `marketing_mix_external_feature_coding.csv`: provider-level external product/process/pass feature coding with source IDs.
 - `jams_platform_type_features.csv`: platform-type feature subset keyed at the city-operator-day level.
 - `platform_event_typology.csv`: event-level platform coding used to construct the daily flags.
 
@@ -23,3 +26,16 @@ Platform-type variables split clean membership into:
 - `platform_local_only_clean`: local MaaS only.
 - `platform_weak_exposure_type_clean`: weak exposure only.
 - `platform_membership_type_clean`: mutually exclusive category used for interpretation.
+
+## Extended features
+
+The extended feature table adds:
+
+- same-city and same-mode competitor counts,
+- trip-share and active-vehicle-share concentration measures, including HHI,
+- relative price position and cheapest-provider indicators,
+- same-platform competitor counts,
+- commute-peak and night-trip shares from the raw trip panel on `bigbo`,
+- provider-level external marketing-mix affordances such as reservation, pass/free-unlock/minute-bundle, and parking/geofence rules.
+
+External provider-level features are broad product/process coding and should not be interpreted as city-specific 2024 campaign timing unless the source is event-specific. Source details are recorded in `results/feature_engineering/external_sources.md`.

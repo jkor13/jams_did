@@ -7,6 +7,7 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 ## Structure
 
 - `src/platform_moderation/`: shared data prep, model, and reporting code
+- `scripts/build_extended_features.py`: builds extended competition and marketing-mix feature tables
 - `scripts/run_concept_moderation.py`: main moderation models
 - `scripts/run_competition_mechanism_dml.py`: competition-mechanism and DML checks
 - `scripts/run_isolated_competition_pricing.py`: isolated competition-pricing mechanism tests
@@ -33,6 +34,7 @@ The clean typed panel is included in `data/JAMS_df_platform_clean_typed.csv`. Se
 From the repository root on `bigbo`:
 
 ```bash
+python3 scripts/build_extended_features.py
 python3 scripts/run_concept_moderation.py
 python3 scripts/run_competition_mechanism_dml.py
 python3 scripts/run_isolated_competition_pricing.py
@@ -72,6 +74,9 @@ Key files:
 - `results/promotion_diagnostics/curated_findings.csv`
 - `results/outcome_robustness/curated_findings.csv`
 - `results/feature_research/marketing_mix_feature_research.md`
+- `results/feature_engineering/feature_inventory.md`
+- `results/feature_engineering/external_sources.md`
+- `data/extended_competition_marketing_features.csv`
 - `results/underused_marketing_mix/curated_findings.csv`
 - `results/feature_fee_moderation/curated_findings.csv`
 - `results/idea_tests/all_idea_terms.csv`
