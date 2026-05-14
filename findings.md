@@ -316,6 +316,82 @@ Online and provider-documentation research suggests several additional marketing
 
 **Reference:** `results/feature_fee_moderation/curated_findings.csv`; `results/feature_fee_moderation/sample_summary.csv`.
 
+## Extended Competition And Marketing-Mix Feature Findings
+
+### F19. Relative same-mode unlock-fee disadvantage is a robust platform pricing moderator.
+
+**Status:** Robust candidate.
+
+**Evidence:** In the extended feature models, `unlock_fee_gap_to_same_mode_min_z:local_maas_only` is negative in 6/6 models: `all market FE = -0.089` (`p < 0.001`) and `all unit FE = -0.030` (`p = 0.002`). `unlock_fee_gap_to_same_mode_min_z:multi_platform` is also negative in 6/6 models: `all market FE = -0.091` (`p < 0.001`) and `all unit FE = -0.041` (`p < 0.001`).
+
+**Interpretation:** The platform pricing mechanism is sharpened by relative price position. In Local MaaS and multi-platform contexts, providers with higher unlock fees than same-mode competitors show lower capacity utilisation. This supports a comparison-salience story more directly than absolute fee levels alone.
+
+**Caveat:** Relative price position is constructed from observed same-city-day provider prices; it should be framed as a pricing-position mechanism, not as an exogenous price shock.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
+### F20. Relative per-minute price disadvantage is weaker than relative unlock-fee disadvantage.
+
+**Status:** Moderate.
+
+**Evidence:** `price_per_minute_gap_to_same_mode_min_z:local_maas_only` is negative in 2/6 models. The full-sample market-FE estimate is `-0.104` (`p = 0.003`), but the full-sample unit-FE estimate is smaller and not significant (`-0.020`, `p = 0.153`).
+
+**Interpretation:** The new relative-price features reinforce that the core platform pricing story is about salient upfront access fees rather than a generic per-minute price disadvantage.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
+### F21. Direct same-mode competition is a moderate Local MaaS boundary condition, not the main mechanism.
+
+**Status:** Moderate.
+
+**Evidence:** `same_mode_competitor_count_day_z:local_maas_only` is negative in 2/6 models: `all market FE = -0.059` (`p = 0.013`) and `all unit FE = -0.019` (`p = 0.083`). Any-platform and large-aggregator terms are not stable.
+
+**Interpretation:** Competition matters most when it creates direct same-mode alternatives in Local MaaS contexts. However, the effect is weaker than the relative unlock-fee gap result, so competition should be treated as a boundary condition that enables comparison rather than the central explanation.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
+### F22. Own same-mode active-vehicle share helps platform contexts, but does not offset high-fee penalties.
+
+**Status:** Moderate.
+
+**Evidence:** `active_vehicle_share_same_mode_z` interactions are positive for large aggregator and multi-platform contexts in 3/6 models. Full-sample unit-FE estimates are `0.027` (`p = 0.008`) for large aggregator and `0.019` (`p = 0.024`) for multi-platform. In high-fee models, `unlock_fee_ge_1_00:multi_platform:active_vehicle_share_same_mode_z` is negative in 3/6 models, with `all unit FE = -0.074` (`p = 0.008`).
+
+**Interpretation:** Availability position can improve utilisation in platform contexts, but higher relative availability does not solve high upfront pricing friction. In multi-platform high-fee settings, greater availability may make the pricing mismatch more visible.
+
+**Caveat:** The high-fee triple is best used as a mechanism probe because signs differ between market FE and unit FE.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
+### F23. Local MaaS performs worse in night-oriented usage contexts.
+
+**Status:** Moderate.
+
+**Evidence:** `night_trip_share_z:local_maas_only` is negative in 4/6 models: `all market FE = -0.019` (`p = 0.001`) and `all unit FE = -0.018` (`p < 0.001`).
+
+**Interpretation:** Platform effects are not only price-based. Local MaaS integrations appear less aligned with night/leisure-heavy usage patterns, which is consistent with a transit-oriented platform context.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
+### F24. Provider-level pass, free-unlock, reservation, and parking/geofence flags are not robust estimators yet.
+
+**Status:** Identification caveat.
+
+**Evidence:** External provider-level flags have limited within-unit variation and generate rank/collinearity warnings in FE models. For scooter-only pass and minute-bundle features, support has only one unique value.
+
+**Interpretation:** These features are useful coding assets and theory inputs, but the current panel cannot estimate them as robust platform effects. They need historical city-date provider tariff or campaign variation.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/sample_support.csv`; `results/feature_engineering/external_sources.md`.
+
+### F25. Same-platform competitor count is not estimable cleanly with current coding.
+
+**Status:** Not supported.
+
+**Evidence:** Same-platform competitor-count interactions produce implausibly large coefficients and missing p-values in market FE, indicating collinearity with platform, city, and operator structure.
+
+**Interpretation:** Platform-internal choice pressure remains theoretically interesting, but the current same-platform count is too mechanically tied to platform membership to use as a clean moderator.
+
+**Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
+
 ## Next Tests
 
 1. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
@@ -325,3 +401,4 @@ Online and provider-documentation research suggests several additional marketing
 5. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
 6. If more external coding is feasible, prioritize pass/free-unlock/minute-bundle intensity over the current broad `subscription_options` dummy.
 7. If adding a product-side moderator to the paper story, prioritize vehicle-type breadth as a Local MaaS buffer; keep group ride as exploratory and avoid complementary-services claims.
+8. Add a paper-facing model around `unlock_fee_gap_to_same_mode_min_z`, because it is the cleanest new feature extension of the platform comparison mechanism.
