@@ -392,13 +392,115 @@ Online and provider-documentation research suggests several additional marketing
 
 **Reference:** `results/extended_feature_effects/refined_findings.csv`; `results/extended_feature_effects/summary.csv`.
 
+## Mechanism Feature Screening Findings
+
+### F26. Effective unlock-fee burden sharpens the platform pricing-friction story.
+
+**Status:** Moderate.
+
+**Evidence:** The unlock-fee share of expected trip price is negative for Local MaaS and multi-platform membership in 3/6 screening models each. In the full sample, market FE estimates are `-0.097` for Local MaaS (`p < 0.001`) and `-0.100` for multi-platform (`p = 0.001`), while the corresponding unit-FE estimates are not significant or not cleanly estimated.
+
+**Interpretation:** The pricing mechanism is not only about nominal unlock fees; it is strongest when the upfront fee represents a large share of the expected trip price.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F27. Relative total trip price is most informative for short trips.
+
+**Status:** Moderate.
+
+**Evidence:** The 5-minute total-price disadvantage relative to same-mode alternatives is negative for Local MaaS and multi-platform membership in 3/6 screening models each. Full-sample market FE estimates are `-0.084` for Local MaaS (`p < 0.001`) and `-0.075` for multi-platform (`p < 0.001`). The 10-minute and 15-minute versions remain negative but weaker.
+
+**Interpretation:** Platform-mediated price comparison appears most damaging when trips are short and the fixed unlock fee is a large part of the visible trip cost.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F28. Cheapest-position and price-rank features strongly support the comparison-salience mechanism.
+
+**Status:** Moderate to strong as a mechanism extension.
+
+**Evidence:** A worse 5-minute same-mode total-price rank is negative in 3/6 models for both Local MaaS (`all market FE = -0.100`, `p < 0.001`) and multi-platform membership (`all market FE = -0.082`, `p < 0.001`). The same pattern appears for unlock-fee rank: Local MaaS `-0.097` (`p < 0.001`) and multi-platform `-0.064` (`p < 0.001`) in full-sample market FE. Being the cheapest same-mode option is positive in market FE for Local MaaS and multi-platform contexts.
+
+**Interpretation:** This is the cleanest new evidence for the platform comparison story: relative rank and cheapest-position matter, especially for short-trip total price and unlock-fee comparisons.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F29. Demand-supply decomposition suggests the pricing-friction pattern is not only a utilisation-ratio artifact.
+
+**Status:** Exploratory.
+
+**Evidence:** In market-FE screening models, high unlock fees and 10-minute total-price disadvantage are negative not only for capacity utilisation but also for trip volume and active vehicles. For Local MaaS high unlock fees, full-sample market FE estimates are `-0.229` for utilisation (`p < 0.001`), `-1.117` for trip volume (`p < 0.001`), and `-0.739` for active vehicles (`p < 0.001`). Unit-FE estimates in this screening family are weak or not cleanly estimated.
+
+**Interpretation:** The negative platform pricing-friction pattern likely combines demand-side choice effects and supply-side deployment/adaptation, but this decomposition should remain secondary until the within-unit evidence is cleaner.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F30. Local MaaS contexts are sensitive to operational availability.
+
+**Status:** Moderate.
+
+**Evidence:** Low-availability days are negatively associated with Local MaaS utilisation in 3/6 models (`all market FE = -0.049`, `p < 0.001`). Conversely, above-normal active-vehicle reliability is positive for Local MaaS in 3/6 models (`all market FE = 0.043`, `p < 0.001`).
+
+**Interpretation:** Platform membership can amplify not only pricing frictions but also place/process frictions: if a Local MaaS-integrated provider is less reliably available, utilisation suffers.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/sample_support.csv`.
+
+### F31. Short-trip and last-mile triple interactions do not add a stable boundary condition.
+
+**Status:** Not supported as a core finding.
+
+**Evidence:** High-unlock-fee interactions with short-trip/last-mile indices show mixed signs and weak significance. One highly collinear full-sample unit-FE specification did not converge and is logged in `model_failures.csv`.
+
+**Interpretation:** The data support short-trip price salience through effective price and 5-minute total-price features, not through an additional high-fee by last-mile triple interaction.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/model_failures.csv`.
+
+### F32. Trip-purpose fit remains a useful Local MaaS boundary condition.
+
+**Status:** Moderate.
+
+**Evidence:** Night-oriented usage is negatively associated with Local MaaS membership in 2/6 screening models (`all market FE = -0.019`, `p = 0.001`). Commute-peak usage is directionally positive for Local MaaS in market FE (`0.011`, `p = 0.035`), but the high-fee trip-purpose triples are not stable.
+
+**Interpretation:** Local MaaS appears more compatible with commute/transit-oriented usage than with night/leisure-oriented usage, but trip purpose does not explain the high-unlock-fee penalty by itself.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F33. Platform maturity is descriptive, not a clean causal mechanism in the current panel.
+
+**Status:** Diagnostic.
+
+**Evidence:** Descriptive age-gradient models within platform types suggest that older multi-platform observations are associated with higher active supply (`0.678`, `p < 0.001`), higher unlock fees (`0.735`, `p < 0.001`), higher per-minute prices (`0.315`, `p = 0.004`), and higher relative fleet size (`0.743`, `p < 0.001`). These models intentionally omit date fixed effects because platform age is not separately identified from calendar time and unit timing under full FE.
+
+**Interpretation:** Maturity is likely bundled with provider/platform adaptation, but the current data cannot separate maturity from platform timing, provider composition, and calendar trends.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`; `results/maturity_diagnostics/maturity_support.csv`.
+
+### F34. A broad outside-option index does not strengthen the platform pricing story.
+
+**Status:** Not supported.
+
+**Evidence:** Interactions between outside-option strength and platform-specific effective price or 10-minute total-price disadvantage produce no stable significant terms across the screening models.
+
+**Interpretation:** Outside options may still matter in specific city dimensions, but a broad composite index is too blunt to improve the current mechanism.
+
+**Reference:** `results/mechanism_feature_tests/summary.csv`; `results/mechanism_feature_tests/terms.csv`.
+
+### F35. Pass/free-unlock features remain mostly unidentifiable; subscriber-free-minutes stays localized mechanism evidence.
+
+**Status:** Identification caveat.
+
+**Evidence:** Provider-level pass/free-unlock and minute-bundle flags have little or no variation within the relevant platform samples. Subscriber-free-minutes appears only in 144 observations, with 126 multi-platform rows and 18 Local MaaS rows; it remains positive for multi-platform in market FE (`0.133`, `p < 0.001`) but is not a clean within-unit campaign estimate.
+
+**Interpretation:** Historical city-operator-date coding of passes, free unlocks, minute bundles, and subscriber benefits remains the highest-value external data extension.
+
+**Reference:** `results/mechanism_feature_tests/sample_support.csv`; `results/mechanism_feature_tests/summary.csv`; `results/promotion_diagnostics/promotion_type_support.csv`.
+
 ## Next Tests
 
-1. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
-2. Consider a parsimonious main model centered on EUR 1.00 and EUR 1.20 unlock-fee thresholds for Local MaaS and multi-platform membership.
-3. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
-4. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
-5. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
-6. If more external coding is feasible, prioritize pass/free-unlock/minute-bundle intensity over the current broad `subscription_options` dummy.
-7. If adding a product-side moderator to the paper story, prioritize vehicle-type breadth as a Local MaaS buffer; keep group ride as exploratory and avoid complementary-services claims.
-8. Add a paper-facing model around `unlock_fee_gap_to_same_mode_min_z`, because it is the cleanest new feature extension of the platform comparison mechanism.
+1. Add a paper-facing model around relative unlock-fee gap, 5-minute total-price gap, and same-mode price rank; these are the cleanest direct tests of comparison salience.
+2. Convert the threshold result into a compact paper table with three cutoffs: EUR 0.99, EUR 1.00, and EUR 1.20.
+3. Use Local MaaS low-availability/reliability as a secondary place/process mechanism, not as the main identification claim.
+4. Avoid claiming that platform maturity independently strengthens the Local MaaS/Multi-platform penalty unless additional data introduce high-fee variation in early maturity phases.
+5. Treat promotion-type findings as qualitative/mechanism support unless additional campaign data add within-unit switching.
+6. Use `log_trip_count_day` as a secondary mechanism outcome mainly for Local MaaS, not as the primary outcome.
+7. If more external coding is feasible, prioritize pass/free-unlock/minute-bundle intensity over the current broad `subscription_options` dummy.
+8. If adding a product-side moderator to the paper story, prioritize vehicle-type breadth as a Local MaaS buffer; keep group ride as exploratory and avoid complementary-services claims.
