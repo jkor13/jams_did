@@ -3,7 +3,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage[a4paper,landscape,margin=1.55cm]{geometry}
+\usepackage[a4paper,landscape,margin=1.45cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -18,423 +20,507 @@
 }
 
 \newcommand{\coef}[2]{#1; $p=#2$}
-\newcommand{\sig}{\textit{p}<0.001}
+\newcommand{\sig}{$p<0.001$}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
 
-\title{Platform Membership, Marketing-Mix Effectiveness, and Capacity Utilisation\\
-\large Model Tests, Extended Features, and Interpretation}
+\title{Platform Membership and Marketing-Mix Effectiveness\\
+\large Formal Feature Definitions, Model Tests, Results, and Interpretation}
 \author{JAMS Platform Membership Analysis}
 \date{\today}
 
 \begin{document}
 \maketitle
 
-\section{Purpose}
+\section{Research Objective}
 
-This document summarizes the current empirical evidence for the platform membership
-paper. The objective is not to test whether platform membership mechanically raises
-capacity utilisation. Instead, the analysis tests whether platform membership changes
-the effectiveness of marketing-mix instruments, especially pricing, promotion, place,
-product, and process-related features. The central dependent variable is transformed
-capacity utilisation, \texttt{ur\_boxcox}. Trip volume, \texttt{log\_trip\_count\_day},
-is used as a secondary outcome for selected robustness checks.
+The empirical question is whether membership in a mobility platform changes how
+marketing-mix instruments translate into provider performance. The theoretical point is
+not that platforms should mechanically increase utilisation. A platform can create demand,
+but it can also intensify comparison, increase price salience, and expose weak elements of
+the provider's offer. The analysis therefore treats platform membership as a market-interface
+condition that can moderate the effect of price, promotion, place, product, and process
+features.
 
-The empirical panel is a city--operator--day panel for 2024, covering March 11, 2024
-through August 22, 2024. The main full-sample models use 14,514 observations, 97
-city--operator units, and 30 cities. Platform membership is coded as substantive
-bookable/payable integration and separated from weak exposure. Platform types distinguish
-large aggregator membership, local MaaS membership, and multi-platform membership.
+The empirical setting is a city--provider--day panel from March 11, 2024 to August 22,
+2024. The main analysis uses 14,514 observations from 97 city--provider units across 30
+cities. The primary outcome is transformed capacity utilisation. For selected robustness
+tests, we also use transformed trip activity as a secondary outcome. Platform membership is
+defined as substantive bookable/payable integration in a platform interface; weaker forms
+of exposure such as pure routing information or visibility are treated separately.
 
-\section{Model Families}
+\section{Notation}
 
-The empirical strategy uses a family of fixed-effect regressions with cluster-robust
-standard errors at the city--operator level. The two main fixed-effect strategies are:
+Let $i$ index providers, $c$ cities, $t$ calendar days, and $m(i)$ the provider's mobility
+mode. The outcome is $Y_{ict}$, transformed capacity utilisation for provider $i$ in city
+$c$ on day $t$. The secondary outcome is $Q_{ict}$, transformed trip activity.
 
-\begin{itemize}[leftmargin=*]
-  \item \textbf{Market FE:} city, date, and operator fixed effects.
-  \item \textbf{Unit FE:} city--operator and date fixed effects.
-\end{itemize}
+Platform membership is denoted by $P_{ict}$. We distinguish three mutually informative
+platform architectures:
+\[
+P^{A}_{ict}=\text{large aggregator only}, \quad
+P^{L}_{ict}=\text{local MaaS only}, \quad
+P^{M}_{ict}=\text{multi-platform membership}.
+\]
+The omitted comparison group consists of provider--city--days without clean bookable/payable
+platform membership.
 
-The market-FE models identify differences across operators and cities after controlling
-for date shocks and operator baselines. The unit-FE models are stricter: they identify
-within-city--operator changes over time net of date fixed effects. Robust findings are
-therefore those that survive both market-FE and unit-FE specifications or are repeatedly
-confirmed across threshold, city-drop, outcome, and feature-extension tests.
+Marketing-mix variables are grouped as follows:
+\[
+\mathcal{M}_{ict}=\{U_{ict}, R_{ict}, H_{ict}, B_{ict}, V_{ict}, C_{ict}, E_{ict}, A_{ict}, N_{ict}\}.
+\]
+Here, $U_{ict}$ is the unlock fee, $R_{ict}$ is the per-minute price, $H_{ict}$ is promotion
+activity, $B_{ict}$ is product breadth, $V_{ict}$ is relative active-vehicle availability,
+$C_{ict}$ is direct same-mode competition, $E_{ict}$ is same-platform competition, $A_{ict}$
+captures commute-oriented usage, and $N_{ict}$ captures night-oriented usage.
 
-The core model classes are:
+All continuous moderator variables used in interactions are standardised before estimation,
+except for binary threshold and promotion indicators. Standardisation makes interaction
+coefficients comparable across feature families.
 
-\begin{enumerate}[leftmargin=*]
-  \item \textbf{Platform main-effect models:}
-  \[
-  Y_{i c t} = \beta_1 Platform_{i c t} + X_{i c t}\Gamma + \alpha + \epsilon_{i c t}.
-  \]
-  \item \textbf{Marketing-mix moderation models:}
-  \[
-  Y_{i c t} = \beta_1 M_{i c t} + \beta_2 Platform_{i c t}
-  + \beta_3 M_{i c t} \times Platform_{i c t} + X_{i c t}\Gamma + \alpha + \epsilon_{i c t}.
-  \]
-  \item \textbf{Platform-type threshold models:}
-  \[
-  Y_{i c t} = \sum_k \beta_k HighUnlockFee_{i c t} \times PlatformType^k_{i c t}
-  + X_{i c t}\Gamma + \alpha + \epsilon_{i c t}.
-  \]
-  \item \textbf{Extended feature models:}
-  \[
-  Y_{i c t} = Feature_{i c t} \times PlatformType_{i c t}
-  + X_{i c t}\Gamma + \alpha + \epsilon_{i c t}.
-  \]
-\end{enumerate}
+\section{Feature Definitions}
 
-Controls include own price per minute, unlock fee, relative fleet size, coverage,
-exclusive coverage, promotion activity, and weather controls, depending on the model
-family. Extended feature tests additionally use same-mode competition, same-platform
-competition, active-vehicle shares, relative price gaps, commute/night usage shares,
-and externally coded product/process/pass features.
+\subsection{Platform Architecture}
 
-\section{Feature Construction}
+Clean platform membership equals one when a provider can be substantially accessed through
+the platform interface. The coding requires bookable/payable integration or comparable
+substantive transaction integration. Weak visibility, route information, or unclear exposure
+is not treated as full membership. Platform architecture is then split into large aggregator
+membership, local public MaaS membership, and simultaneous membership in both types.
 
-The extended feature layer adds three kinds of variables.
+\subsection{Pricing Features}
 
-\paragraph{Competition and market structure.}
-Same-city and same-mode competitor counts measure direct competitive pressure.
-Concentration is captured through trip-share and active-vehicle-share Herfindahl-type
-indices. Same-mode measures are preferred because scooter-to-scooter competition is
-more meaningful than a pooled count of all shared mobility providers.
+The absolute unlock-fee threshold feature is
+\[
+D^{\tau}_{ict}=\mathbb{1}\{U_{ict}\geq \tau\},
+\]
+where $\tau$ is a salient threshold such as EUR 1.00 or EUR 1.20. This feature captures
+whether the provider charges an upfront access fee high enough to become salient before
+the ride begins.
 
-\paragraph{Relative price position.}
-The most important new features compare each provider's price to the cheapest same-mode
-competitor in the same city on the same day. The key variable is
-\texttt{unlock\_fee\_gap\_to\_same\_mode\_min\_z}. It measures whether the provider has
-a salient upfront access-price disadvantage relative to direct same-mode alternatives.
-A parallel variable is constructed for price per minute.
+The relative same-mode unlock-fee disadvantage is defined as
+\[
+\Delta^{U}_{ict}=z\left(U_{ict}-\min_{j\in \mathcal{S}_{ct}(m(i))} U_{jct}\right),
+\]
+where $\mathcal{S}_{ct}(m(i))$ is the set of providers in city $c$ on day $t$ that operate
+in the same mobility mode as provider $i$, and $z(\cdot)$ denotes standardisation. If a
+provider is the cheapest same-mode option, the raw gap is zero. This feature operationalises
+relative access-price disadvantage: the provider is not merely expensive in absolute terms,
+but expensive relative to directly comparable alternatives.
 
-\paragraph{Product, process, and pass affordances.}
-The panel already contains group ride, vehicle-type breadth, subscription options,
-and complementary services. Additional provider-level external coding captures
-reservation availability, pass/free-unlock affordances, minute bundles, and mandatory
-parking/geofence rules. These external flags are useful for theory development, but
-because they vary mostly at the provider level, they are not yet cleanly estimable as
-causal city-date effects.
+Analogously, the relative per-minute price disadvantage is
+\[
+\Delta^{R}_{ict}=z\left(R_{ict}-\min_{j\in \mathcal{S}_{ct}(m(i))} R_{jct}\right).
+\]
+This parallel feature allows us to test whether platform membership amplifies all price
+differences or specifically upfront price salience.
+
+\subsection{Competition and Availability}
+
+Direct same-mode competition is measured as
+\[
+C_{ict}=\left|\mathcal{S}_{ct}(m(i))\right|-1,
+\]
+standardised for modelling. It counts how many directly comparable same-mode alternatives
+are active in the same city on the same day.
+
+Same-mode active-vehicle share is
+\[
+V_{ict}=\frac{Fleet_{ict}}{\sum_{j\in \mathcal{S}_{ct}(m(i))} Fleet_{jct}},
+\]
+where $Fleet_{ict}$ is the active vehicle count for provider $i$ in city $c$ on day $t$.
+This captures the provider's relative availability position among direct substitutes.
+
+Same-platform competition counts providers that are visible or bookable through the same
+platform environment. This feature is theoretically important because platforms can create
+within-interface comparison. Empirically, however, it is tightly linked to platform
+architecture and city/provider structure, so it is treated cautiously.
+
+\subsection{Product, Promotion, and Process Features}
+
+Product breadth, $B_{ict}$, is the standardised number of vehicle types offered by the
+provider in the city--day. The interpretation is straightforward: broader assortment can
+increase modal fit and may buffer pricing frictions.
+
+Promotion activity, $H_{ict}$, captures whether a provider--city--day is covered by an
+identified promotion. We distinguish broad promotion activity from more specific usage-cost
+reducing promotions, such as free minutes for public-transport subscribers. These specific
+promotions are theoretically relevant because they reduce marginal usage cost or offset
+access-price salience, but their current empirical support is localized.
+
+Commute-oriented usage and night-oriented usage are derived from the distribution of observed
+trips over the day. The night-share feature, $N_{ict}$, captures whether provider usage is
+disproportionately concentrated in evening and night contexts. This is a process/context
+feature: it indicates the kind of usage situation in which the service is being consumed.
+
+Provider-level product/process affordances include reservation availability, pass/free-unlock
+availability, minute-bundle availability, and parking/geofence rules. These are useful for
+describing the marketing mix, but current variation is mostly provider-level rather than
+city--date specific. They are therefore treated as theory-supporting features unless future
+data provide historical city-level timing.
+
+\section{Model Specification}
+
+We estimate fixed-effect models with cluster-robust standard errors at the city--provider
+level. Two fixed-effect structures are used throughout:
+\[
+\alpha^{M}_{ict}=\lambda_c+\mu_i+\delta_t
+\]
+for market fixed effects, and
+\[
+\alpha^{U}_{ict}=\psi_{ic}+\delta_t
+\]
+for unit fixed effects. The market specification controls for city, provider, and day
+differences. The unit specification is stricter because it identifies within city--provider
+variation over time, net of day shocks.
+
+\subsection{Platform Main Effect}
+
+The baseline platform model is
+\[
+Y_{ict}=\beta P_{ict}+X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+This model asks whether platform membership is associated with a uniform utilisation shift.
+It is intentionally not the central theory test; it is a diagnostic benchmark.
+
+\subsection{Marketing-Mix Moderation}
+
+The general moderation model is
+\[
+Y_{ict}=\beta_1 M_{ict}+\beta_2 P_{ict}
+\beta_3(M_{ict}\times P_{ict})+X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+The coefficient $\beta_3$ tests whether platform membership changes the effectiveness of a
+marketing-mix feature $M_{ict}$.
+
+\subsection{Platform-Architecture Moderation}
+
+For platform types, we estimate
+\[
+Y_{ict}=\sum_{k\in\{A,L,M\}}\theta_k(M_{ict}\times P^{k}_{ict})
+ +X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+The key terms are $\theta_L$ and $\theta_M$, because the theory predicts stronger comparison
+effects in local MaaS and multi-platform contexts than in large aggregator-only contexts.
+
+\subsection{High Unlock-Fee Threshold Models}
+
+The threshold model is
+\[
+Y_{ict}=\sum_{k\in\{A,L,M\}}\gamma_{k\tau}(D^{\tau}_{ict}\times P^{k}_{ict})
++X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+Here $\gamma_{k\tau}$ tests whether a salient upfront fee threshold is especially harmful
+inside platform architecture $k$.
+
+\subsection{Relative Price-Position Models}
+
+The relative price-position model is
+\[
+Y_{ict}=\sum_{k\in\{A,L,M\}}\eta_k(\Delta^U_{ict}\times P^{k}_{ict})
++X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+This is the cleanest empirical test of the comparison-salience mechanism: if platforms make
+direct alternatives more comparable, then being more expensive than same-mode competitors
+should be particularly harmful in platform contexts.
+
+\subsection{Product-Buffer Model}
+
+To test whether product breadth buffers pricing friction, we estimate
+\[
+Y_{ict}=\sum_{k\in\{A,L,M\}}\rho_k(D^{1.00}_{ict}\times P^{k}_{ict}\times B_{ict})
++X_{ict}'\Gamma+\alpha_{ict}+\varepsilon_{ict}.
+\]
+A positive $\rho_L$ means that product breadth weakens the Local MaaS high-fee penalty.
 
 \section{Results}
 
-\setlength{\tabcolsep}{2.2pt}
+\setlength{\tabcolsep}{2.8pt}
 \renewcommand{\arraystretch}{1.18}
 \small
-\begin{longtable}{p{0.075\linewidth}p{0.185\linewidth}p{0.10\linewidth}p{0.115\linewidth}p{0.115\linewidth}p{0.17\linewidth}p{0.085\linewidth}}
-\caption{Relevant Findings, Robustness, and Full-Sample Estimates}\\
+\begin{longtable}{p{0.075\linewidth}p{0.245\linewidth}p{0.115\linewidth}p{0.13\linewidth}p{0.13\linewidth}p{0.235\linewidth}}
+\caption{Relevant Empirical Findings}\\
 \toprule
-\textbf{Finding} & \textbf{Substantive claim} & \textbf{Robustness} &
-\textbf{Market FE} & \textbf{Unit FE} & \textbf{Observation basis} & \textbf{Primary source}\\
+\textbf{Finding} & \textbf{Substantive result} & \textbf{Robustness} &
+\textbf{Market fixed effects} & \textbf{Unit fixed effects} & \textbf{Empirical basis}\\
 \midrule
 \endfirsthead
 \toprule
-\textbf{Finding} & \textbf{Substantive claim} & \textbf{Robustness} &
-\textbf{Market FE} & \textbf{Unit FE} & \textbf{Observation basis} & \textbf{Primary source}\\
+\textbf{Finding} & \textbf{Substantive result} & \textbf{Robustness} &
+\textbf{Market fixed effects} & \textbf{Unit fixed effects} & \textbf{Empirical basis}\\
 \midrule
 \endhead
 \bottomrule
 \endfoot
 
 F1 & Platform membership does not create a stable generic utilisation lift. &
-Not robust as main effect &
+Not robust as a main effect &
 \coef{0.061}{0.008} &
 \coef{-0.010}{0.205} &
-Full sample, $N=14{,}514$. Positive only in market FE; unit FE not significant. &
-\texttt{idea\_tests/05} \\
+Full sample, $N=14{,}514$. The positive association disappears in the stricter within-unit model. \\
 
 F2 & Unlock fees become more detrimental in platform contexts. &
-Robust in market FE; weaker in strict unit FE &
+Robust in market models; weaker within-unit &
 \coef{-0.0715}{<0.001} &
 \coef{-0.0236}{0.349} &
-Full sample, $N=14{,}514$; negative in 9 significant concept-family models. &
-\texttt{concept\_aligned} \\
+Full sample, $N=14{,}514$. Repeated negative evidence across concept and pricing models. \\
 
 F3 & High unlock fees are harmful in platform contexts. &
 Robust &
 \coef{-0.104}{<0.001} &
 \coef{-0.040}{<0.001} &
-Full sample, $N=14{,}514$; negative in 6/6 threshold models. &
-\texttt{deep\_dive} \\
+Full sample, $N=14{,}514$. Negative in all six threshold specifications. \\
 
-F3/F4 & High unlock fee $\times$ Local MaaS. &
+F3/F4 & High unlock fees are especially harmful in Local MaaS contexts. &
 Very robust &
 \coef{-0.150}{0.002} &
 \coef{-0.046}{<0.001} &
-Full sample, $N=14{,}514$; negative in 6/6 models. &
-\texttt{deep\_dive} \\
+Full sample, $N=14{,}514$. Stable across threshold and platform-type model families. \\
 
-F3/F4 & High unlock fee $\times$ Multi-platform. &
+F3/F4 & High unlock fees are especially harmful in multi-platform contexts. &
 Very robust &
 \coef{-0.131}{0.007} &
 \coef{-0.098}{<0.001} &
-Full sample, $N=14{,}514$; negative in 6/6 models. &
-\texttt{deep\_dive} \\
+Full sample, $N=14{,}514$. Stable across threshold and platform-type model families. \\
 
-F3 & EUR 1.00 unlock-fee threshold $\times$ Local MaaS. &
+F3 & EUR 1.00 threshold in Local MaaS contexts. &
 Very robust &
 \coef{-0.229}{<0.001} &
 \coef{-0.049}{0.002} &
-Full sample, $N=14{,}514$; Local MaaS high-fee support: 90 rows. &
-\texttt{threshold} \\
+Full sample, $N=14{,}514$; 90 Local MaaS high-fee observations. \\
 
-F3 & EUR 1.00 unlock-fee threshold $\times$ Multi-platform. &
+F3 & EUR 1.00 threshold in multi-platform contexts. &
 Very robust &
 \coef{-0.146}{<0.001} &
 \coef{-0.099}{<0.001} &
-Full sample, $N=14{,}514$; multi-platform high-fee support: 1,308 rows. &
-\texttt{threshold} \\
+Full sample, $N=14{,}514$; 1,308 multi-platform high-fee observations. \\
 
-F3 & EUR 1.20 unlock-fee threshold $\times$ Local MaaS. &
+F3 & EUR 1.20 threshold in Local MaaS contexts. &
 Very robust &
 \coef{-0.233}{<0.001} &
 \coef{-0.047}{0.006} &
-Full sample, $N=14{,}514$; Local MaaS high-fee support: 72 rows. &
-\texttt{threshold} \\
+Full sample, $N=14{,}514$; 72 Local MaaS high-fee observations. \\
 
-F3 & EUR 1.20 unlock-fee threshold $\times$ Multi-platform. &
+F3 & EUR 1.20 threshold in multi-platform contexts. &
 Very robust &
 \coef{-0.171}{<0.001} &
 \coef{-0.082}{<0.001} &
-Full sample, $N=14{,}514$; multi-platform high-fee support: 1,029 rows. &
-\texttt{threshold} \\
+Full sample, $N=14{,}514$; 1,029 multi-platform high-fee observations. \\
 
-F3a & Local MaaS high-fee penalty is not driven by one platform city. &
+F3a & The Local MaaS high-fee penalty is not driven by one city. &
 Robust &
-Median city-drop coefficient at EUR 1.00: -0.209 &
-Median city-drop coefficient at EUR 1.00: -0.035 &
-13/13 leave-one-platform-city models negative and significant for EUR 0.99, 1.00, and 1.20. &
-\texttt{city\_sensitivity} \\
+Median city-drop estimate at EUR 1.00: -0.209 &
+Median city-drop estimate at EUR 1.00: -0.035 &
+All 13 leave-one-platform-city tests remain negative and significant for EUR 0.99, EUR 1.00, and EUR 1.20. \\
 
-F3a & Multi-platform high-fee penalty is not a single-city artifact. &
+F3a & The multi-platform high-fee penalty is not a single-city artifact. &
 Robust at EUR 1.00 and EUR 1.20 &
-Median city-drop coefficients: -0.107 at EUR 1.00; -0.135 at EUR 1.20 &
-Median city-drop coefficients: -0.085 at EUR 1.00; -0.073 at EUR 1.20 &
-13/13 leave-one-platform-city models negative and significant at EUR 1.00 and 1.20. &
-\texttt{city\_sensitivity} \\
+Median city-drop estimates: -0.107 at EUR 1.00 and -0.135 at EUR 1.20 &
+Median city-drop estimates: -0.085 at EUR 1.00 and -0.073 at EUR 1.20 &
+All 13 leave-one-platform-city tests remain negative and significant at the EUR 1.00 and EUR 1.20 thresholds. \\
 
-F4a & Large aggregator-only / Free Now-style membership does not show a stable high-fee penalty. &
+F4a & Large aggregator-only membership does not show a stable high-fee penalty. &
 Negative evidence &
 \coef{-0.045}{0.066} &
 \coef{-0.016}{0.325} &
-Full sample, $N=14{,}514$; not robustly significant. &
-\texttt{threshold} \\
+Full sample, $N=14{,}514$. The high-fee effect is not a large-aggregator-only result. \\
 
-F3b & Local MaaS high-fee result generalizes from utilisation to trip volume. &
+F3b & The Local MaaS high-fee result generalises to trip activity. &
 Robust for Local MaaS &
-Log trips, EUR 1.00: \coef{-1.014}{<0.001} &
-Log trips, EUR 1.00: \coef{-0.130}{<0.001} &
-Full sample, $N=14{,}514$; not a pure utilisation-ratio artifact. &
-\texttt{outcome} \\
+\coef{-1.014}{<0.001} &
+\coef{-0.130}{<0.001} &
+Full sample, $N=14{,}514$. The result is not merely a capacity-ratio artifact. \\
 
-F3b & Multi-platform trip-volume evidence is weaker than utilisation evidence. &
+F3b & Multi-platform evidence is cleaner for utilisation than for trip activity. &
 Moderate &
-Log trips, EUR 1.00: \coef{-0.538}{<0.001} &
-Log trips, EUR 1.00: \coef{-0.010}{0.873} &
-Full sample, $N=14{,}514$; strong in market FE, not in unit FE. &
-\texttt{outcome} \\
+\coef{-0.538}{<0.001} &
+\coef{-0.010}{0.873} &
+Full sample, $N=14{,}514$. Strong in market models, not within unit. \\
 
-F5 & Generic promotion $\times$ platform membership is positive mainly within unit. &
+F5 & Promotion in platform contexts is positive mainly within provider--city units. &
 Moderate &
 \coef{0.012}{0.424} &
 \coef{0.0115}{<0.001} &
-Full sample, $N=14{,}514$; promotion rows: 738. &
-\texttt{promotion} \\
+Full sample, $N=14{,}514$; 738 promotion observations. \\
 
 F6 & Subscriber-free-minutes promotions fit multi-platform exposure. &
-Exploratory mechanism, locally bounded &
+Exploratory mechanism evidence &
 \coef{0.122}{<0.001} &
 \coef{0.043}{<0.001} &
-Full sample model, $N=14{,}514$, but treated support is only Nürnberg--VOI, 144 rows. &
-\texttt{deep\_dive} \\
+Full sample model, $N=14{,}514$, but treated support is only one city--provider cell with 144 observations. \\
 
-F16 & Vehicle-type breadth buffers Local MaaS high-fee penalties. &
+F16 & Vehicle-type breadth buffers the Local MaaS high-fee penalty. &
 Moderate to robust &
 \coef{0.074}{<0.001} &
 \coef{0.014}{<0.001} &
-Full sample, $N=14{,}514$; Local MaaS high-fee support: 90 rows. &
-\texttt{feature\_fee} \\
+Full sample, $N=14{,}514$; 90 Local MaaS high-fee observations. \\
 
-F19 & Relative same-mode unlock-fee disadvantage $\times$ Local MaaS. &
+F19 & Relative same-mode unlock-fee disadvantage is harmful in Local MaaS contexts. &
 Very robust; strongest new feature result &
 \coef{-0.089}{<0.001} &
 \coef{-0.030}{0.002} &
-Full sample, $N=14{,}514$; feature fully observed. &
-\texttt{extended} \\
+Full sample, $N=14{,}514$. The feature is available for the full panel. \\
 
-F19 & Relative same-mode unlock-fee disadvantage $\times$ Multi-platform. &
+F19 & Relative same-mode unlock-fee disadvantage is harmful in multi-platform contexts. &
 Very robust &
 \coef{-0.091}{<0.001} &
 \coef{-0.041}{<0.001} &
-Full sample, $N=14{,}514$; feature fully observed. &
-\texttt{extended} \\
+Full sample, $N=14{,}514$. The feature is available for the full panel. \\
 
 F20 & Relative per-minute price disadvantage is weaker than relative unlock-fee disadvantage. &
 Moderate &
 \coef{-0.104}{0.003} &
 \coef{-0.020}{0.153} &
-Full sample, $N=14{,}514$; weaker and less robust than unlock-fee gap. &
-\texttt{extended} \\
+Full sample, $N=14{,}514$. Supports upfront-fee salience rather than generic price sensitivity. \\
 
-F21 & Same-mode competition is a Local MaaS boundary condition, not the main mechanism. &
+F21 & Same-mode competition is a Local MaaS boundary condition. &
 Moderate &
 \coef{-0.059}{0.013} &
 \coef{-0.019}{0.083} &
-Full sample, $N=14{,}514$; same-mode competitor feature fully observed. &
-\texttt{extended} \\
+Full sample, $N=14{,}514$. Weaker than the relative unlock-fee gap. \\
 
-F22 & Own same-mode active-vehicle share helps platform contexts but does not offset high fees. &
+F22 & Own same-mode availability helps in some platform contexts but does not offset high fees. &
 Moderate &
-For multi-platform: \coef{-0.007}{0.819} &
-For multi-platform: \coef{0.019}{0.024} &
-Full sample, $N=14{,}514$; positive mainly within unit. &
-\texttt{extended} \\
+\coef{-0.007}{0.819} for multi-platform &
+\coef{0.019}{0.024} for multi-platform &
+Full sample, $N=14{,}514$. Positive mainly within unit; high-fee triples remain problematic. \\
 
-F23 & Local MaaS performs worse in night-oriented usage contexts. &
+F23 & Local MaaS is less aligned with night-oriented usage. &
 Moderate &
 \coef{-0.019}{0.001} &
 \coef{-0.018}{<0.001} &
-Full sample, $N=14{,}514$; night-trip share from raw trips. &
-\texttt{extended} \\
+Full sample, $N=14{,}514$. Usage-context evidence from observed trip timing. \\
 
-F24 & Provider-level pass, free-unlock, reservation, and parking/geofence flags are useful but not robust estimators. &
+F24 & Provider-level pass, free-unlock, reservation, and parking/geofence features are not robust estimators yet. &
 Identification caveat &
-Not interpreted due to rank/collinearity issues &
-Not interpreted due to weak within-unit variation &
-Full sample fields available, but scooter-only pass/minute-bundle support has only one unique value. &
-\texttt{extended} \\
+Not interpreted because of collinearity &
+Not interpreted because of weak within-unit variation &
+The features are useful for theory and future coding, but current support is mostly provider-level. \\
 
 F25 & Same-platform competitor count is not estimable cleanly. &
 Not supported &
 Implausibly large coefficients and missing p-values &
 Unstable and collinear &
-Feature is mechanically tied to platform/city/operator structure. &
-\texttt{extended} \\
+The measure is too mechanically tied to platform architecture and city/provider structure. \\
 
 \end{longtable}
 \normalsize
 
-\section{Neutral Description of Results}
+\section{Description of the Evidence}
 
-The evidence rejects a simple main-effect interpretation of platform membership.
-Platform membership is positive in market-FE models, but the same coefficient becomes
-small and insignificant in unit-FE models. This pattern suggests that platform membership
-is not best understood as a uniform utilisation booster. Instead, the stronger empirical
-regularities appear in interaction terms between platform membership and marketing-mix
-variables.
+The first empirical pattern is that platform membership is not a reliable main-effect
+story. The market fixed-effect estimate is positive, but the effect disappears in the
+stricter provider--city fixed-effect specification. This motivates the moderation logic:
+platforms matter less as an independent treatment that raises utilisation everywhere and
+more as an interface that changes how users evaluate the provider's marketing mix.
 
-The most consistent baseline result is the pricing-friction effect. Unlock fees become
-more detrimental in platform contexts, especially once the fee crosses salient high-fee
-thresholds around EUR 1.00 and EUR 1.20. The threshold results are strongest for Local
-MaaS and multi-platform contexts. At the EUR 1.00 cutoff, Local MaaS has a market-FE
-coefficient of -0.229 and a unit-FE coefficient of -0.049. Multi-platform membership
-has a market-FE coefficient of -0.146 and a unit-FE coefficient of -0.099. Both effects
-are statistically significant. Similar estimates appear at EUR 1.20.
+The second and most stable pattern is pricing friction. High upfront access fees are
+consistently more harmful in platform contexts, especially in Local MaaS and multi-platform
+settings. At the EUR 1.00 threshold, Local MaaS has a market fixed-effect coefficient of
+-0.229 and a unit fixed-effect coefficient of -0.049. Multi-platform membership has a
+market fixed-effect coefficient of -0.146 and a unit fixed-effect coefficient of -0.099.
+The EUR 1.20 threshold produces the same qualitative conclusion.
 
-The leave-one-city tests show that these high-fee platform-type results are not driven
-by a single city. For Local MaaS, all 13 leave-one-platform-city tests remain negative
-and significant for EUR 0.99, EUR 1.00, and EUR 1.20. For multi-platform membership,
-the EUR 1.00 and EUR 1.20 thresholds also remain negative and significant in all 13
-city-drop models. The effect is therefore not only a Berlin, Hamburg, or Munich artifact.
+The robustness checks strengthen this interpretation. The Local MaaS high-fee penalty
+survives every leave-one-platform-city check at EUR 0.99, EUR 1.00, and EUR 1.20. The
+multi-platform high-fee penalty survives every city-drop test at EUR 1.00 and EUR 1.20.
+The Local MaaS result also appears in trip activity, which indicates that the finding is
+not merely a mathematical artefact of the utilisation denominator.
 
-Outcome robustness further strengthens the Local MaaS pricing-friction result. The
-Local MaaS high-fee penalty appears not only in capacity utilisation but also in trip
-volume. For log trips, the EUR 1.00 Local MaaS effect is -1.014 in market FE and -0.130
-in unit FE. Multi-platform evidence is cleaner for capacity utilisation than for trip
-volume, because the log-trip unit-FE coefficient is not significant.
+The third pattern is that relative price position clarifies the mechanism. Providers with
+higher unlock fees than their same-mode competitors perform worse in Local MaaS and
+multi-platform contexts. The relative unlock-fee disadvantage is negative and significant
+in both market and unit specifications. The analogous per-minute price disadvantage is
+weaker. This distinction is central: platforms do not simply make all price differences
+more important; they appear to make upfront access-price differences especially salient.
 
-The extended feature models sharpen the interpretation. The relative unlock-fee gap to
-the cheapest same-mode competitor is the strongest new feature. In Local MaaS contexts,
-the interaction is -0.089 in market FE and -0.030 in unit FE. In multi-platform contexts,
-it is -0.091 in market FE and -0.041 in unit FE. These estimates indicate that platform
-contexts are especially punitive when a provider has a higher upfront access fee than
-direct same-mode alternatives.
+The fourth pattern is that other marketing-mix elements matter, but they are secondary.
+Product breadth buffers the Local MaaS high-fee penalty, suggesting that a richer product
+assortment can partially offset pricing friction by improving modal fit. Promotion shows
+positive within-unit evidence, and subscriber-free-minutes promotions fit the multi-platform
+logic, but the campaign evidence is localized. Same-mode competition is a useful boundary
+condition, yet it is weaker than relative price position. Finally, provider-level pass,
+reservation, and parking/geofence features are useful descriptive and theoretical variables,
+but current variation is not sufficient for robust estimation.
 
-Other features are weaker or more bounded. Same-mode competition is negative for Local
-MaaS in market FE and marginal in unit FE, but it is less robust than relative unlock-fee
-position. Per-minute price gaps are also weaker than unlock-fee gaps. Active-vehicle
-share helps in some platform contexts, especially within unit, but it does not eliminate
-high-fee penalties. Night-oriented usage contexts are negatively associated with Local
-MaaS platform effectiveness. Promotion results are promising but locally bounded:
-subscriber-free-minutes perform well in multi-platform models but are based on one
-treated city--operator cell, Nürnberg--VOI.
+\section{Interpretation and Narrative}
 
-\section{Interpretation and Analysis}
+The results support a comparison-salience account of platform membership. Platforms change
+the shopping and decision environment. They bring alternatives into the same interface,
+make providers easier to compare, and increase the visibility of differences that might
+otherwise be less salient. The central marketing consequence is that the same pricing
+decision can have different effects inside and outside platform environments.
 
-The results support a comparison-salience theory of platform membership. Platforms do
-not simply create demand by adding another channel. Instead, they change the information
-environment in which users evaluate mobility options. When multiple providers or modes
-are visible in an integrated interface, upfront price differences become more salient.
-This is why the unlock-fee effects are stronger and more consistent than per-minute
-price effects. Unlock fees are immediate, discrete, and easy to compare before the trip
-begins. Per-minute prices are less salient because their total cost implications are
-uncertain until trip duration is known.
+The strongest evidence concerns upfront access fees. Unlock fees are discrete, immediate,
+and visible before the trip begins. They are therefore well suited to become salient in a
+platform interface. Per-minute prices require users to anticipate trip duration and total
+cost, which makes them less transparent at the point of choice. This explains why the
+relative unlock-fee gap produces the strongest new feature result, while the relative
+per-minute price gap is weaker.
 
-Local MaaS and multi-platform memberships are the key contexts. Large aggregator-only
-membership does not show the same stable high-fee penalty. This matters theoretically:
-the relevant mechanism is not simply commercial aggregator exposure. Rather, the strongest
-effects occur when shared mobility is embedded in a broader urban mobility choice set.
-Local MaaS interfaces and multi-platform exposure plausibly make outside options more
-visible and comparable. In that setting, a high or relatively high unlock fee becomes a
-stronger deterrent.
+Local MaaS and multi-platform contexts are the empirical core of the story. In these
+contexts, users are not merely exposed to one additional booking channel. They are exposed
+to a broader urban mobility choice architecture in which shared mobility competes with
+other providers and, often, other transport modes. The platform therefore acts as a
+comparison environment. A provider with a high or relatively high unlock fee becomes less
+attractive precisely because the platform makes alternatives more visible.
 
-The new relative-price features substantially improve the story. Absolute high-fee
-thresholds show that salient fees matter. Relative same-mode unlock-fee gaps show why
-they matter in a platform context: users do not evaluate the fee in isolation; they can
-compare it against direct alternatives. This provides a more marketing-specific account
-of platform membership. The platform does not merely moderate price sensitivity; it
-changes the competitive frame through which price is interpreted.
+The negative evidence for large aggregator-only membership is important. If the findings
+were only a Free Now-style aggregator effect, the interpretation would be narrower and
+less theoretically distinctive. Instead, the strongest evidence appears in local public
+MaaS and multi-platform settings. This supports a broader claim about platform architecture:
+the effect depends on how the platform structures choice, not merely on whether a provider
+is present on a commercial aggregator.
 
-The vehicle-type breadth result adds a useful product-side counterpoint. Broader product
-assortment appears to buffer Local MaaS high-fee penalties. This suggests that marketing
-mix elements can interact: pricing friction is harmful, but product breadth can partially
-offset it by improving modal fit. The finding should not be overstated as a universal
-product-breadth effect, but it gives the paper a more balanced story than ``platforms
-make fees bad.'' Platforms amplify pricing frictions, yet product design can soften the
-effect.
+The product-breadth result makes the narrative more balanced. Platform membership can
+amplify pricing frictions, but providers are not powerless. Broader vehicle-type offerings
+appear to buffer the Local MaaS high-fee penalty. This suggests an interaction between price
+and product strategy: a salient access fee is harmful, but greater modal fit can soften the
+effect. In marketing terms, platform participation raises the bar for internal consistency
+across the mix. Price, product breadth, and availability need to work together.
 
-Promotion is theoretically aligned with the mechanism but empirically less clean. The
-subscriber-free-minutes result suggests that usage-cost-reducing promotions can work
-well in multi-platform contexts. However, the evidence is localized to Nürnberg--VOI.
-Therefore, promotion should be used as mechanism evidence rather than as a central causal
-claim. Future data with campaign start and end dates across multiple cities would allow
-a stronger test.
+The promotion findings point in a similar direction but remain empirically narrower.
+Usage-cost reducing promotions such as subscriber free minutes fit the platform logic
+because they counteract cost salience. However, the observed campaign support is too
+localized for a central causal claim. The result should be framed as mechanism-consistent
+evidence and as a priority for future city-date campaign coding.
 
-The competition findings are also better interpreted as boundary conditions than as the
-main effect. Same-mode competition matters moderately in Local MaaS contexts, but the
-relative unlock-fee gap is stronger. This implies that competition per se is not enough.
-What matters is whether competition makes a specific marketing-mix disadvantage visible.
-In other words, competition enables comparison, but the marketing-mix attribute being
-compared remains central.
+Competition should be interpreted as an enabling condition rather than as the main
+mechanism. Same-mode competition matters because it supplies alternatives that can be
+compared. But the stronger result is not the competitor count itself; it is the provider's
+relative access-price disadvantage. This means the paper should not argue simply that
+competition moderates platform effects. A more precise claim is that platforms make
+marketing-mix disadvantages more consequential when direct alternatives are available and
+visible.
 
-\section{Implications for the Paper}
+\section{Implications}
 
-The strongest paper-facing claim is:
+The empirical narrative can be stated as follows:
 
 \begin{quote}
-Platform membership reshapes marketing-mix effectiveness by increasing the salience of
-comparable mobility alternatives. In Local MaaS and multi-platform contexts, providers
-with high or relatively high unlock fees experience lower capacity utilisation. This
-effect is not a generic platform main effect, not a Free Now-only result, and not driven
-by a single city.
+Platform membership reshapes marketing-mix effectiveness by changing the comparison
+environment in which users evaluate mobility providers. In Local MaaS and multi-platform
+contexts, high and relatively high unlock fees reduce capacity utilisation. The effect is
+not a generic platform main effect, not a large aggregator-only result, and not driven by a
+single city. Product breadth can buffer the penalty, while promotion and pass features
+remain promising but require richer historical campaign coding.
 \end{quote}
 
-The main empirical table should therefore prioritize: (1) high unlock-fee thresholds
-for Local MaaS and multi-platform membership; (2) relative same-mode unlock-fee gaps;
-(3) outcome robustness for trip volume; and (4) city-drop robustness. Product breadth
-can be used as a secondary moderation result. Promotion and provider-level pass features
-should be framed as mechanism evidence and future data opportunities unless richer
-city-date coding is added.
+For the paper, the most defensible main results are: high unlock-fee thresholds in Local
+MaaS and multi-platform contexts; relative same-mode unlock-fee disadvantage; leave-one-city
+robustness; and trip-activity robustness for Local MaaS. Product breadth should be used as
+a secondary moderation result. Promotion and provider-level pass/process features should
+support the mechanism and motivate future data collection rather than anchor the main
+identification claim.
 
 \section{Limitations}
 
-Several limitations should be explicit. First, the data are observational and city--
-operator--day based. The results identify robust conditional associations rather than
-randomized treatment effects. Second, some platform types are structurally tied to cities
-and providers, making unit-FE evidence especially important. Third, provider-level external
-features such as pass availability, reservation, and parking/geofence rules lack enough
-within-unit time variation for robust estimation. Fourth, promotion results are based on
-few treated campaign contexts. Finally, same-platform competitor count is currently too
-collinear with platform membership and city/operator structure to be interpreted as a
-clean moderator.
+The analysis is observational and estimates conditional associations rather than randomized
+treatment effects. Some platform architectures are structurally tied to specific cities and
+providers, which is why unit fixed effects and leave-one-city checks are essential. Several
+promising marketing-mix features, especially passes, reservations, and parking/geofence
+rules, currently vary mostly at the provider level and therefore cannot be interpreted as
+clean city-date effects. Promotion findings are based on limited campaign support. Same-
+platform competitor counts are theoretically interesting but currently too collinear with
+platform architecture to estimate cleanly.
 
 \end{document}
