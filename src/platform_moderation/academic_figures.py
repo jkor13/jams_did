@@ -1,13 +1,12 @@
-"""Create paper-facing figures for platform-membership findings."""
+"""Create caption-ready figures for platform-membership findings."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import Path
-import textwrap
 
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
 
@@ -18,27 +17,54 @@ OUT = REPO_ROOT / "docs/figures"
 MECH = OUTPUT_BASE / "mechanism_feature_tests"
 
 
-OKABE_ITO = {
-    "orange": "#E69F00",
-    "sky": "#56B4E9",
-    "green": "#009E73",
-    "yellow": "#F0E442",
-    "blue": "#0072B2",
-    "vermillion": "#D55E00",
-    "purple": "#CC79A7",
+ACCESSIBLE_PRINT_COLORS = {
     "black": "#000000",
+    "blue": "#0072B2",
+    "orange": "#E69F00",
+    "green": "#009E73",
+    "purple": "#CC79A7",
+    "dark_gray": "#666666",
+    "light_gray": "#D9D9D9",
+    "grid": "#D9D9D9",
 }
 
-PLATFORM_COLORS = {
-    "large_aggregator_only": "#7A7A7A",
-    "local_maas_only": OKABE_ITO["blue"],
-    "multi_platform": OKABE_ITO["vermillion"],
+PLATFORM_STYLES = {
+    "large_aggregator_only": {
+        "label": "Large aggregator",
+        "color": ACCESSIBLE_PRINT_COLORS["black"],
+        "marker": "s",
+        "linestyle": "--",
+        "hatch": "///",
+    },
+    "local_maas_only": {
+        "label": "Local MaaS",
+        "color": ACCESSIBLE_PRINT_COLORS["blue"],
+        "marker": "o",
+        "linestyle": "-",
+        "hatch": "",
+    },
+    "multi_platform": {
+        "label": "Multi-platform",
+        "color": ACCESSIBLE_PRINT_COLORS["orange"],
+        "marker": "^",
+        "linestyle": "-.",
+        "hatch": "xx",
+    },
 }
 
-PLATFORM_LABELS = {
-    "large_aggregator_only": "Large aggregator",
-    "local_maas_only": "Local MaaS",
-    "multi_platform": "Multi-platform",
+FEATURE_STYLES = {
+    "unlock_fee_ge_1_00": {
+        "label": "High unlock fee",
+        "color": ACCESSIBLE_PRINT_COLORS["blue"],
+        "marker": "o",
+        "hatch": "",
+    },
+    "total_price_10min_gap_to_same_mode_min_z": {
+        "label": "10-min total-price gap",
+        "color": ACCESSIBLE_PRINT_COLORS["orange"],
+        "marker": "^",
+        "hatch": "xx",
+    },
 }
 
 
@@ -62,7 +88,6 @@ def configure_style() -> None:
             "savefig.dpi": 320,
             "font.family": "DejaVu Sans",
             "font.size": 9.5,
-            "axes.titlesize": 12,
             "axes.labelsize": 9.5,
             "xtick.labelsize": 8.8,
             "ytick.labelsize": 8.8,
@@ -71,7 +96,7 @@ def configure_style() -> None:
             "axes.spines.right": False,
             "axes.edgecolor": "#333333",
             "axes.linewidth": 0.8,
-            "grid.color": "#D9D9D9",
+            "grid.color": ACCESSIBLE_PRINT_COLORS["grid"],
             "grid.linewidth": 0.7,
             "pdf.fonttype": 42,
             "ps.fonttype": 42,
@@ -115,15 +140,37 @@ def get_term(terms: pd.DataFrame, row: FigureRow) -> pd.Series:
 
 def save_figure(fig: plt.Figure, stem: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{stem}.pdf", bbox_inches="tight")
-    fig.savefig(OUT / f"{stem}.png", bbox_inches="tight")
+    fig.savefig(OUT / f"{stem}.pdf", bbox_inches="tight", facecolor="white")
+    fig.savefig(OUT / f"{stem}.png", bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
 
-def add_source_note(fig: plt.Figure, note: str) -> None:
-    # Source details are kept in docs/figures/README.md and paper captions; placing
-    # them inside compact panels made the exported figures harder to read.
-    _ = (fig, note)
+def platform_line_handles(platforms: list[str]) -> list[Line2D]:
+    return [
+        Line2D(
+            [0],
+            [0],
+            color=PLATFORM_STYLES[platform]["color"],
+            marker=PLATFORM_STYLES[platform]["marker"],
+            linestyle=PLATFORM_STYLES[platform]["linestyle"],
+            label=PLATFORM_STYLES[platform]["label"],
+            markersize=5.5,
+            linewidth=1.7,
+        )
+        for platform in platforms
+    ]
+
+
+def platform_bar_handles(platforms: list[str]) -> list[Patch]:
+    return [
+        Patch(
+            facecolor=PLATFORM_STYLES[platform]["color"],
+            edgecolor="#222222",
+            hatch=PLATFORM_STYLES[platform]["hatch"],
+            label=PLATFORM_STYLES[platform]["label"],
+        )
+        for platform in platforms
+    ]
 
 
 def coefficient_plot() -> None:
@@ -211,18 +258,17 @@ def coefficient_plot() -> None:
                 "ci_low": value["ci_low"],
                 "ci_high": value["ci_high"],
                 "p_value": value["p_value"],
-                "nobs": int(value["nobs"]),
             }
         )
     data = pd.DataFrame(records)
 
     y = np.arange(len(data))[::-1]
-    fig, ax = plt.subplots(figsize=(8.4, 5.4), layout="constrained")
+    fig, ax = plt.subplots(figsize=(7.8, 5.0), layout="constrained")
     ax.axvline(0, color="#333333", lw=0.9)
     ax.grid(axis="x", alpha=0.85)
     for idx, row in data.iterrows():
         yy = y[idx]
-        color = PLATFORM_COLORS[row["platform"]]
+        style = PLATFORM_STYLES[row["platform"]]
         xerr = None
         if np.isfinite(row["ci_low"]) and np.isfinite(row["ci_high"]):
             xerr = np.array([[row["coef"] - row["ci_low"]], [row["ci_high"] - row["coef"]]])
@@ -230,9 +276,9 @@ def coefficient_plot() -> None:
             row["coef"],
             yy,
             xerr=xerr,
-            fmt="o",
-            color=color,
-            ecolor=color,
+            fmt=style["marker"],
+            color=style["color"],
+            ecolor=style["color"],
             elinewidth=1.5,
             capsize=3,
             markersize=6.5,
@@ -248,35 +294,26 @@ def coefficient_plot() -> None:
             color="#333333",
         )
 
-    labels = [f"{r.label}\n{PLATFORM_LABELS[r.platform]}" for r in rows]
+    labels = [f"{record['label']}\n{PLATFORM_STYLES[record['platform']]['label']}" for record in records]
     ax.set_yticks(y)
     ax.set_yticklabels(labels)
     ax.set_xlim(-0.18, 0.28)
     ax.set_xlabel("Interaction coefficient on transformed capacity utilisation")
-    ax.set_title("Platform contexts penalise visible short-trip price disadvantages", loc="left", pad=10)
-    ax.text(
-        -0.18,
-        len(data) + 0.35,
-        "Full sample, market fixed effects; points show focal interactions, whiskers show 95% CIs.",
-        ha="left",
-        va="bottom",
-        fontsize=8.4,
-        color="#555555",
+    used_platforms = [p for p in PLATFORM_STYLES if p in set(data["platform"])]
+    ax.legend(
+        handles=platform_line_handles(used_platforms),
+        frameon=False,
+        loc="center left",
+        bbox_to_anchor=(1.01, 0.5),
     )
-    handles = [
-        Line2D([0], [0], marker="o", lw=0, color=color, label=PLATFORM_LABELS[key], markersize=6)
-        for key, color in PLATFORM_COLORS.items()
-        if key in set(data["platform"])
-    ]
-    ax.legend(handles=handles, frameon=False, loc="upper right", bbox_to_anchor=(1.0, 1.02), ncol=2)
-    add_source_note(fig, "Source: results/mechanism_feature_tests/terms.csv")
     save_figure(fig, "fig01_key_mechanism_coefficients")
 
 
 def trip_duration_salience_plot() -> None:
     terms, _ = load_results()
     records = []
-    for platform in ["large_aggregator_only", "local_maas_only", "multi_platform"]:
+    platforms = ["large_aggregator_only", "local_maas_only", "multi_platform"]
+    for platform in platforms:
         for minutes in [5, 10, 15]:
             row = FigureRow(
                 f"{minutes}-min total price",
@@ -293,138 +330,144 @@ def trip_duration_salience_plot() -> None:
                     "coef": value["coef"],
                     "ci_low": value["ci_low"],
                     "ci_high": value["ci_high"],
-                    "p_value": value["p_value"],
                 }
             )
     data = pd.DataFrame(records)
 
-    fig, ax = plt.subplots(figsize=(7.2, 4.4), layout="constrained")
+    fig, ax = plt.subplots(figsize=(6.2, 3.9), layout="constrained")
     ax.axhline(0, color="#333333", lw=0.9)
     ax.grid(axis="y", alpha=0.85)
-    for platform, group in data.groupby("platform"):
+    for platform, group in data.groupby("platform", sort=False):
         group = group.sort_values("minutes")
-        color = PLATFORM_COLORS[platform]
+        style = PLATFORM_STYLES[platform]
         ax.plot(
             group["minutes"],
             group["coef"],
-            marker="o",
+            marker=style["marker"],
             markersize=6.5,
             lw=2.0,
-            color=color,
-            label=PLATFORM_LABELS[platform],
+            linestyle=style["linestyle"],
+            color=style["color"],
+            label=style["label"],
         )
         ax.fill_between(
             group["minutes"].to_numpy(dtype=float),
             group["ci_low"].to_numpy(dtype=float),
             group["ci_high"].to_numpy(dtype=float),
-            color=color,
-            alpha=0.14,
+            color=style["color"],
+            alpha=0.10,
             linewidth=0,
         )
     ax.set_xticks([5, 10, 15])
     ax.set_xlabel("Assumed trip duration in total-price feature")
     ax.set_ylabel("Interaction coefficient")
-    ax.set_title("Relative price disadvantage is strongest for short trips", loc="left", pad=10)
-    ax.text(
-        5,
-        0.047,
-        "Same-mode price gap to the cheapest visible alternative; full sample, market fixed effects.",
-        ha="left",
-        va="bottom",
-        fontsize=8.4,
-        color="#555555",
+    ax.legend(
+        handles=platform_line_handles(platforms),
+        frameon=False,
+        loc="center left",
+        bbox_to_anchor=(1.01, 0.5),
     )
-    ax.legend(frameon=False, loc="center left", bbox_to_anchor=(1.01, 0.5))
-    add_source_note(fig, "Source: results/mechanism_feature_tests/terms.csv")
     save_figure(fig, "fig02_trip_duration_price_salience")
 
 
-def price_rank_cheapest_plot() -> None:
-    terms, _ = load_results()
+def build_rank_data(terms: pd.DataFrame, specs: list[tuple[str, str]]) -> pd.DataFrame:
     platforms = ["large_aggregator_only", "local_maas_only", "multi_platform"]
-    rank_specs = [
+    rows = []
+    for metric, stem in specs:
+        for platform in platforms:
+            row = FigureRow(
+                metric,
+                "I6_cheapest_rank",
+                f"{stem}:{platform}",
+                platform,
+                family="cheapest_rank_platform_fit",
+            )
+            value = get_term(terms, row)
+            rows.append(
+                {
+                    "metric": metric,
+                    "platform": platform,
+                    "coef": value["coef"],
+                    "ci_low": value["ci_low"],
+                    "ci_high": value["ci_high"],
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def grouped_horizontal_bar_plot(
+    data: pd.DataFrame,
+    specs: list[tuple[str, str]],
+    xlim: tuple[float, float],
+    stem: str,
+) -> None:
+    platforms = ["large_aggregator_only", "local_maas_only", "multi_platform"]
+    metric_order = [spec[0] for spec in specs]
+    ybase = np.arange(len(metric_order))[::-1]
+    bar_h = 0.22
+    offsets = {"large_aggregator_only": -bar_h, "local_maas_only": 0.0, "multi_platform": bar_h}
+
+    fig, ax = plt.subplots(figsize=(5.8, 2.9), layout="constrained")
+    ax.axvline(0, color="#333333", lw=0.9)
+    ax.grid(axis="x", alpha=0.8)
+    for platform in platforms:
+        group = data.loc[data["platform"].eq(platform)].copy()
+        style = PLATFORM_STYLES[platform]
+        ys = np.array([ybase[metric_order.index(m)] for m in group["metric"]]) + offsets[platform]
+        ax.barh(
+            ys,
+            group["coef"],
+            height=bar_h * 0.82,
+            color=style["color"],
+            alpha=0.92,
+            label=style["label"],
+            edgecolor="#222222",
+            linewidth=0.45,
+            hatch=style["hatch"],
+        )
+        for yy, (_, row) in zip(ys, group.iterrows(), strict=False):
+            if np.isfinite(row["ci_low"]) and np.isfinite(row["ci_high"]):
+                ax.plot([row["ci_low"], row["ci_high"]], [yy, yy], color="#222222", lw=0.9)
+    ax.set_xlim(*xlim)
+    ax.set_xlabel("Interaction coefficient")
+    ax.set_yticks(ybase)
+    ax.set_yticklabels(metric_order)
+    ax.legend(
+        handles=platform_bar_handles(platforms),
+        frameon=False,
+        loc="center left",
+        bbox_to_anchor=(1.01, 0.5),
+    )
+    save_figure(fig, stem)
+
+
+def price_rank_penalty_plot() -> None:
+    terms, _ = load_results()
+    specs = [
         ("Unlock-fee rank", "unlock_fee_rank_same_mode_day_z"),
         ("5-min total-price rank", "total_price_5min_rank_same_mode_z"),
     ]
-    cheapest_specs = [
+    data = build_rank_data(terms, specs)
+    grouped_horizontal_bar_plot(data, specs, (-0.16, 0.08), "fig03_price_rank_penalty")
+
+
+def cheapest_position_benefit_plot() -> None:
+    terms, _ = load_results()
+    specs = [
         ("Cheapest unlock fee", "is_same_mode_cheapest_unlock_fee"),
         ("Cheapest 5-min total price", "is_same_mode_cheapest_total_price_5min"),
     ]
-
-    def build(specs: list[tuple[str, str]]) -> pd.DataFrame:
-        rows = []
-        for metric, stem in specs:
-            for platform in platforms:
-                row = FigureRow(
-                    metric,
-                    "I6_cheapest_rank",
-                    f"{stem}:{platform}",
-                    platform,
-                    family="cheapest_rank_platform_fit",
-                )
-                value = get_term(terms, row)
-                rows.append(
-                    {
-                        "metric": metric,
-                        "platform": platform,
-                        "coef": value["coef"],
-                        "ci_low": value["ci_low"],
-                        "ci_high": value["ci_high"],
-                        "p_value": value["p_value"],
-                    }
-                )
-        return pd.DataFrame(rows)
-
-    rank_data = build(rank_specs)
-    cheap_data = build(cheapest_specs)
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.6), sharey=False, layout="constrained")
-    bar_h = 0.22
-    offsets = {"large_aggregator_only": -bar_h, "local_maas_only": 0.0, "multi_platform": bar_h}
-    metric_order = [spec[0] for spec in rank_specs]
-    ybase = np.arange(len(metric_order))[::-1]
-
-    for ax, data, specs, title in [
-        (axes[0], rank_data, rank_specs, "Penalty for worse same-mode price rank"),
-        (axes[1], cheap_data, cheapest_specs, "Benefit of being the cheapest visible option"),
-    ]:
-        panel_metric_order = [spec[0] for spec in specs]
-        panel_ybase = np.arange(len(panel_metric_order))[::-1]
-        ax.axvline(0, color="#333333", lw=0.9)
-        ax.grid(axis="x", alpha=0.8)
-        for platform in platforms:
-            group = data.loc[data["platform"].eq(platform)].copy()
-            ys = np.array([panel_ybase[panel_metric_order.index(m)] for m in group["metric"]]) + offsets[platform]
-            ax.barh(
-                ys,
-                group["coef"],
-                height=bar_h * 0.82,
-                color=PLATFORM_COLORS[platform],
-                alpha=0.88,
-                label=PLATFORM_LABELS[platform],
-            )
-            for y, (_, row) in zip(ys, group.iterrows(), strict=False):
-                if np.isfinite(row["ci_low"]) and np.isfinite(row["ci_high"]):
-                    ax.plot([row["ci_low"], row["ci_high"]], [y, y], color="#222222", lw=0.8)
-        ax.set_title(title, loc="left")
-        ax.set_xlabel("Interaction coefficient")
-        ax.set_yticks(panel_ybase)
-        ax.set_yticklabels(panel_metric_order)
-
-    axes[0].set_xlim(-0.16, 0.08)
-    axes[1].set_xlim(-0.08, 0.24)
-    axes[1].legend(frameon=False, loc="center left", bbox_to_anchor=(1.01, 0.5))
-    fig.suptitle("Price rank, not only price level, carries the platform comparison mechanism", x=0.01, ha="left")
-    add_source_note(fig, "Source: results/mechanism_feature_tests/terms.csv")
-    save_figure(fig, "fig03_price_rank_and_cheapest_position")
+    data = build_rank_data(terms, specs)
+    grouped_horizontal_bar_plot(data, specs, (-0.08, 0.24), "fig04_cheapest_position_benefit")
 
 
-def demand_supply_decomposition_plot() -> None:
+def demand_supply_outcome_plot(
+    outcome: str,
+    family: str,
+    xlim: tuple[float, float],
+    stem: str,
+) -> None:
     terms, _ = load_results()
-    outcomes = [
-        ("Capacity utilisation", "ur_boxcox", "decomposition_ur_boxcox", (-0.30, 0.08)),
-        ("Trip volume", "log_trip_count_day", "decomposition_log_trip_count_day", (-1.35, 0.18)),
-        ("Active vehicles", "log_active_vehicles_day", "decomposition_log_active_vehicles_day", (-0.95, 0.18)),
-    ]
     features = [
         ("High unlock fee", "unlock_fee_ge_1_00", "unlock_fee_ge_1_00:local_maas_only"),
         (
@@ -434,46 +477,76 @@ def demand_supply_decomposition_plot() -> None:
         ),
     ]
 
-    fig, axes = plt.subplots(1, 3, figsize=(10.0, 4.3), layout="constrained")
     y = np.array([1, 0])
-    for ax, (title, outcome, family, xlim) in zip(axes, outcomes, strict=False):
-        ax.axvline(0, color="#333333", lw=0.9)
-        ax.grid(axis="x", alpha=0.8)
-        for idx, (label, feature, term) in enumerate(features):
-            value = get_term(
-                terms,
-                FigureRow(
-                    label,
-                    "I4_demand_supply_decomposition",
-                    term,
-                    "local_maas_only",
-                    family=family,
-                    feature=feature,
-                    outcome=outcome,
-                ),
-            )
-            color = OKABE_ITO["blue"] if idx == 0 else OKABE_ITO["orange"]
-            ax.errorbar(
-                value["coef"],
-                y[idx],
-                xerr=np.array([[value["coef"] - value["ci_low"]], [value["ci_high"] - value["coef"]]]),
-                fmt="o",
-                color=color,
-                ecolor=color,
-                elinewidth=1.5,
-                capsize=3,
-                markersize=6.5,
-            )
-            ax.text(value["coef"], y[idx] + 0.16, p_label(value["p_value"]), ha="center", fontsize=7.5, color="#555555")
-        ax.set_title(title)
-        ax.set_xlim(*xlim)
-        ax.set_ylim(-0.5, 1.55)
-        ax.set_yticks(y)
-        ax.set_yticklabels([f[0] for f in features] if ax is axes[0] else [])
-        ax.set_xlabel("Coefficient")
-    fig.suptitle("Local MaaS price frictions appear in utilisation, demand, and supply-side deployment", x=0.01, ha="left")
-    add_source_note(fig, "Full sample, market fixed effects; outcome scales differ across panels. Source: results/mechanism_feature_tests/terms.csv")
-    save_figure(fig, "fig04_demand_supply_decomposition")
+    fig, ax = plt.subplots(figsize=(4.4, 2.8), layout="constrained")
+    ax.axvline(0, color="#333333", lw=0.9)
+    ax.grid(axis="x", alpha=0.8)
+    for idx, (label, feature, term) in enumerate(features):
+        value = get_term(
+            terms,
+            FigureRow(
+                label,
+                "I4_demand_supply_decomposition",
+                term,
+                "local_maas_only",
+                family=family,
+                feature=feature,
+                outcome=outcome,
+            ),
+        )
+        style = FEATURE_STYLES[feature]
+        ax.errorbar(
+            value["coef"],
+            y[idx],
+            xerr=np.array([[value["coef"] - value["ci_low"]], [value["ci_high"] - value["coef"]]]),
+            fmt=style["marker"],
+            color=style["color"],
+            ecolor=style["color"],
+            elinewidth=1.5,
+            capsize=3,
+            markersize=6.5,
+        )
+        ax.text(
+            value["coef"],
+            y[idx] + 0.16,
+            p_label(value["p_value"]),
+            ha="center",
+            fontsize=7.5,
+            color="#555555",
+        )
+    ax.set_xlim(*xlim)
+    ax.set_ylim(-0.5, 1.55)
+    ax.set_yticks(y)
+    ax.set_yticklabels([feature[0] for feature in features])
+    ax.set_xlabel("Coefficient")
+    save_figure(fig, stem)
+
+
+def demand_supply_capacity_utilisation_plot() -> None:
+    demand_supply_outcome_plot(
+        "ur_boxcox",
+        "decomposition_ur_boxcox",
+        (-0.30, 0.08),
+        "fig05_demand_supply_capacity_utilisation",
+    )
+
+
+def demand_supply_trip_volume_plot() -> None:
+    demand_supply_outcome_plot(
+        "log_trip_count_day",
+        "decomposition_log_trip_count_day",
+        (-1.35, 0.18),
+        "fig06_demand_supply_trip_volume",
+    )
+
+
+def demand_supply_active_vehicles_plot() -> None:
+    demand_supply_outcome_plot(
+        "log_active_vehicles_day",
+        "decomposition_log_active_vehicles_day",
+        (-0.95, 0.18),
+        "fig07_demand_supply_active_vehicles",
+    )
 
 
 def screening_map_plot() -> None:
@@ -501,11 +574,29 @@ def screening_map_plot() -> None:
     counts["short_label"] = counts["idea"].map(label_map)
     y = np.arange(len(counts))
 
-    fig, ax = plt.subplots(figsize=(7.8, 4.8), layout="constrained")
+    fig, ax = plt.subplots(figsize=(7.0, 4.6), layout="constrained")
     ax.axvline(0, color="#333333", lw=0.9)
     ax.grid(axis="x", alpha=0.8)
-    ax.barh(y, -counts["negative_terms"], color=OKABE_ITO["blue"], alpha=0.85, label="Negative significant terms")
-    ax.barh(y, counts["positive_terms"], color=OKABE_ITO["orange"], alpha=0.85, label="Positive significant terms")
+    ax.barh(
+        y,
+        -counts["negative_terms"],
+        color=ACCESSIBLE_PRINT_COLORS["blue"],
+        alpha=0.92,
+        label="Negative significant terms",
+        edgecolor="#222222",
+        linewidth=0.45,
+        hatch="",
+    )
+    ax.barh(
+        y,
+        counts["positive_terms"],
+        color=ACCESSIBLE_PRINT_COLORS["orange"],
+        alpha=0.92,
+        label="Positive significant terms",
+        edgecolor="#222222",
+        linewidth=0.45,
+        hatch="xx",
+    )
     for yy, (_, row) in zip(y, counts.iterrows(), strict=False):
         if row["negative_terms"]:
             ax.text(-row["negative_terms"] - 0.2, yy, str(row["negative_terms"]), ha="right", va="center", fontsize=8)
@@ -516,10 +607,8 @@ def screening_map_plot() -> None:
     max_count = int(max(counts["negative_terms"].max(), counts["positive_terms"].max())) + 2
     ax.set_xlim(-max_count, max_count)
     ax.set_xlabel("Number of terms with at least one significant screening model")
-    ax.set_title("Screening map: where the new feature ideas produced signal", loc="left", pad=10)
     ax.legend(frameon=False, loc="lower right")
-    add_source_note(fig, "Counts summarise screening terms, not independent hypotheses. Source: results/mechanism_feature_tests/summary.csv")
-    save_figure(fig, "fig05_mechanism_screening_map")
+    save_figure(fig, "fig08_mechanism_screening_map")
 
 
 def write_readme() -> None:
@@ -529,18 +618,26 @@ def write_readme() -> None:
 
 Generated by `python3 scripts/create_academic_figures.py`.
 
+Figure files are caption-ready: no plot titles, subtitles, source notes, or
+interpretive headlines are embedded in the image. Add titles in LaTeX captions
+and combine panels later with LaTeX subfigures/subcaptions.
+
 Figures:
 
-- `fig01_key_mechanism_coefficients`: paper-facing forest plot for the strongest mechanism coefficients.
-- `fig02_trip_duration_price_salience`: line plot showing that relative total-price disadvantage is strongest for short trips.
-- `fig03_price_rank_and_cheapest_position`: price-rank penalty and cheapest-position benefit.
-- `fig04_demand_supply_decomposition`: Local MaaS price-friction signals across utilisation, trip volume, and active-vehicle deployment.
-- `fig05_mechanism_screening_map`: compact overview of which feature ideas generated signal.
+- `fig01_key_mechanism_coefficients`: forest plot for the strongest mechanism coefficients.
+- `fig02_trip_duration_price_salience`: line plot for trip-duration-specific relative price disadvantage.
+- `fig03_price_rank_penalty`: standalone price-rank penalty panel.
+- `fig04_cheapest_position_benefit`: standalone cheapest-position benefit panel.
+- `fig05_demand_supply_capacity_utilisation`: standalone demand-supply panel for capacity utilisation.
+- `fig06_demand_supply_trip_volume`: standalone demand-supply panel for trip volume.
+- `fig07_demand_supply_active_vehicles`: standalone demand-supply panel for active vehicles.
+- `fig08_mechanism_screening_map`: screening overview of which feature ideas generated signal.
 
 Design choices:
 
 - Matplotlib-only for reproducibility.
-- Okabe-Ito-style colorblind-safe palette.
+- One stable accessible print palette across figures.
+- Color-vision-deficiency-friendly colors plus marker, line-style, and hatch redundancy for black-and-white printing.
 - PDF and PNG exports for manuscript and preview use.
 - Full-sample market-FE coefficients are used for the paper-facing mechanism plots because several unit-FE screening variants have rank-deficient covariance estimates.
 """,
@@ -552,7 +649,10 @@ def create_academic_figures() -> None:
     configure_style()
     coefficient_plot()
     trip_duration_salience_plot()
-    price_rank_cheapest_plot()
-    demand_supply_decomposition_plot()
+    price_rank_penalty_plot()
+    cheapest_position_benefit_plot()
+    demand_supply_capacity_utilisation_plot()
+    demand_supply_trip_volume_plot()
+    demand_supply_active_vehicles_plot()
     screening_map_plot()
     write_readme()
