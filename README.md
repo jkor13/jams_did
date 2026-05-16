@@ -21,6 +21,7 @@ marketing-mix instruments on provider capacity utilisation (`ur_boxcox`).
 - `scripts/run_feature_fee_moderation.py`: tests whether product features moderate high unlock-fee platform penalties
 - `scripts/run_extended_feature_effects.py`: screens platform effects using extended competition and marketing-mix features
 - `scripts/run_mechanism_feature_tests.py`: screens additional mechanism features such as effective trip price, short-trip total-price rank, availability reliability, trip purpose, maturity, outside options, and pass/promotion softeners
+- `scripts/create_academic_figures.py`: creates paper-facing PNG/PDF figures from curated result tables
 - `scripts/run_idea_*.py`: seven separate JAMS story-extension tests
 - `scripts/run_all_idea_tests.py`: runs all seven idea tests
 - `results/`: curated CSV outputs used for interpretation
@@ -50,6 +51,7 @@ python3 scripts/run_underused_marketing_mix.py
 python3 scripts/run_feature_fee_moderation.py
 python3 scripts/run_extended_feature_effects.py
 python3 scripts/run_mechanism_feature_tests.py
+python3 scripts/create_academic_figures.py
 ```
 
 Run the separate idea tests:
@@ -85,6 +87,7 @@ Key files:
 - `results/feature_fee_moderation/curated_findings.csv`
 - `results/extended_feature_effects/refined_findings.csv`
 - `results/mechanism_feature_tests/observations.md`
+- `docs/figures/`
 - `results/idea_tests/all_idea_terms.csv`
 - `findings.md`
 - `results/idea_tests/significant_idea_terms.csv`
